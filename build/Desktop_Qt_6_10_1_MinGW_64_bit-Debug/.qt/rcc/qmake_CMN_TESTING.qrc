@@ -1,6 +1,0 @@
-<RCC>
-  <qresource prefix="/qt/qml/CMN_TESTING">
-    <file alias="qmldir">D:/code1/appppp-cmn1/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/CMN_TESTING/qmldir</file>
-  </qresource>
-</RCC>
-

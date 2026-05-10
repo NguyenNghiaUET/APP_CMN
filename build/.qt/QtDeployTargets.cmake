@@ -1,5 +1,0 @@
-set(__QT_DEPLOY_TARGET_QXlsx_FILE D:/CMN/ProjectAppCap-abcde/build/QXlsx/libQXlsxQt6.a)
-set(__QT_DEPLOY_TARGET_QXlsx_TYPE STATIC_LIBRARY)
-set(__QT_DEPLOY_TARGET_appCMN_TESTING_FILE D:/CMN/ProjectAppCap-abcde/build/appCMN_TESTING.exe)
-set(__QT_DEPLOY_TARGET_appCMN_TESTING_TYPE EXECUTABLE)
-set(__QT_DEPLOY_TARGET_appCMN_TESTING_RUNTIME_DLLS C:/Qt/6.10.1/mingw_64/bin/Qt6QuickControls2.dll;C:/Qt/6.10.1/mingw_64/bin/Qt6LabsPlatform.dll;C:/Qt/6.10.1/mingw_64/bin/Qt6SerialPort.dll;C:/Qt/6.10.1/mingw_64/bin/Qt6Concurrent.dll;C:/Qt/6.10.1/mingw_64/bin/Qt6QuickTemplates2.dll;C:/Qt/6.10.1/mingw_64/bin/Qt6Quick.dll;C:/Qt/6.10.1/mingw_64/bin/Qt6OpenGL.dll;C:/Qt/6.10.1/mingw_64/bin/Qt6QmlMeta.dll;C:/Qt/6.10.1/mingw_64/bin/Qt6QmlWorkerScript.dll;C:/Qt/6.10.1/mingw_64/bin/Qt6QmlModels.dll;C:/Qt/6.10.1/mingw_64/bin/Qt6Qml.dll;C:/Qt/6.10.1/mingw_64/bin/Qt6Network.dll;C:/Qt/6.10.1/mingw_64/bin/Qt6Widgets.dll;C:/Qt/6.10.1/mingw_64/bin/Qt6Gui.dll;C:/Qt/6.10.1/mingw_64/bin/Qt6Core.dll)

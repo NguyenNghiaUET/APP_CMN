@@ -1,6 +1,0 @@
-<RCC>
-  <qresource prefix="/qt/qml/CMN_TESTING/">
-    <file alias="logo.png">D:/code1/appppp-cmn1/logo.png</file>
-  </qresource>
-</RCC>
-

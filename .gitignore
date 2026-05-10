@@ -1,6 +1,8 @@
 # Qt build artifacts
 build/
-build-*/
+build*/
+Debug/
+Release/
 *.pro.user
 *.pro.user.*
 .qmake.stash
