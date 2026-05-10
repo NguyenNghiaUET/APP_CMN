@@ -1,0 +1,3311 @@
+{
+    "formatRevision": 1,
+    "modules": [
+        {
+            "moduleFiles": [
+                {
+                    "entries": [
+                        {
+                            "codegenResult": 2,
+                            "column": 5,
+                            "durationMicroseconds": 195,
+                            "functionName": "openWindow",
+                            "line": 13,
+                            "message": "method show cannot be resolved."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 31,
+                            "durationMicroseconds": 163,
+                            "functionName": "activityLog",
+                            "line": 22,
+                            "message": "Cannot generate efficient code for storing an array in a non-sequence type"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 5,
+                            "durationMicroseconds": 0,
+                            "functionName": "addLog",
+                            "line": 23,
+                            "message": "Functions without type annotations won't be compiled"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 32,
+                            "durationMicroseconds": 212,
+                            "functionName": "onSelectedPlanNameChanged",
+                            "line": 1803,
+                            "message": "Cannot access value for name fileHelper"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 35,
+                            "durationMicroseconds": 91,
+                            "functionName": "_resultsPath",
+                            "line": 1985,
+                            "message": "Cannot access value for name fileHelper"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 31,
+                            "durationMicroseconds": 85,
+                            "functionName": "_logPath",
+                            "line": 2103,
+                            "message": "Cannot access value for name fileHelper"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 18,
+                            "durationMicroseconds": 38,
+                            "functionName": "visible",
+                            "line": 43,
+                            "message": "Cannot retrieve a non-object type by ID: loginDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 23,
+                            "durationMicroseconds": 113,
+                            "functionName": "fill",
+                            "line": 41,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 35,
+                            "durationMicroseconds": 48,
+                            "functionName": "fill",
+                            "line": 45,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 26,
+                            "durationMicroseconds": 0,
+                            "functionName": "standardButtons",
+                            "line": 56,
+                            "message": "Could not find property \"standardButtons\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 19,
+                            "durationMicroseconds": 0,
+                            "functionName": "onOpened",
+                            "line": 279,
+                            "message": "Could not find signal \"opened\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 27,
+                            "durationMicroseconds": 0,
+                            "functionName": "centerIn",
+                            "line": 52,
+                            "message": "Could not find property \"centerIn\"."
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 112,
+                            "durationMicroseconds": 75,
+                            "functionName": "type",
+                            "line": 59,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 111,
+                            "durationMicroseconds": 54,
+                            "functionName": "type",
+                            "line": 60,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 31,
+                            "durationMicroseconds": 56,
+                            "functionName": "fill",
+                            "line": 69,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 20,
+                            "durationMicroseconds": 66,
+                            "functionName": "width",
+                            "line": 80,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 24,
+                            "durationMicroseconds": 55,
+                            "functionName": "width",
+                            "line": 90,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 33,
+                            "durationMicroseconds": 73,
+                            "functionName": "bottom",
+                            "line": 89,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 35,
+                            "durationMicroseconds": 42,
+                            "functionName": "centerIn",
+                            "line": 94,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 47,
+                            "durationMicroseconds": 69,
+                            "functionName": "horizontalCenter",
+                            "line": 99,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 34,
+                            "durationMicroseconds": 56,
+                            "functionName": "weight",
+                            "line": 104,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 47,
+                            "durationMicroseconds": 100,
+                            "functionName": "horizontalCenter",
+                            "line": 106,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 47,
+                            "durationMicroseconds": 73,
+                            "functionName": "horizontalCenter",
+                            "line": 112,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 31,
+                            "durationMicroseconds": 69,
+                            "functionName": "fill",
+                            "line": 120,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 34,
+                            "durationMicroseconds": 58,
+                            "functionName": "weight",
+                            "line": 131,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 28,
+                            "durationMicroseconds": 44,
+                            "functionName": "color",
+                            "line": 141,
+                            "message": "Cannot access value for name dlgPasswordField"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 35,
+                            "durationMicroseconds": 79,
+                            "functionName": "color",
+                            "line": 142,
+                            "message": "Cannot access value for name _loginShowError"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 35,
+                            "durationMicroseconds": 29,
+                            "functionName": "width",
+                            "line": 143,
+                            "message": "Cannot access value for name dlgPasswordField"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 39,
+                            "durationMicroseconds": 57,
+                            "functionName": "fill",
+                            "line": 149,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 39,
+                            "durationMicroseconds": 0,
+                            "functionName": "echoMode",
+                            "line": 160,
+                            "message": "Could not find property \"echoMode\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 41,
+                            "durationMicroseconds": 0,
+                            "functionName": "onAccepted",
+                            "line": 165,
+                            "message": "Could not find signal \"accepted\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 44,
+                            "durationMicroseconds": 0,
+                            "functionName": "onTextChanged",
+                            "line": 166,
+                            "message": "Could not find signal \"textChanged\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 36,
+                            "durationMicroseconds": 39,
+                            "functionName": "color",
+                            "line": 172,
+                            "message": "Cannot access value for name dlgShowPwMa"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 39,
+                            "durationMicroseconds": 37,
+                            "functionName": "text",
+                            "line": 177,
+                            "message": "Cannot access value for name dlgShowPwBtn"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 51,
+                            "durationMicroseconds": 48,
+                            "functionName": "centerIn",
+                            "line": 176,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 46,
+                            "durationMicroseconds": 62,
+                            "functionName": "cursorShape",
+                            "line": 187,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 44,
+                            "durationMicroseconds": 55,
+                            "functionName": "onClicked",
+                            "line": 188,
+                            "message": "Cannot access value for name dlgShowPwBtn"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 47,
+                            "durationMicroseconds": 44,
+                            "functionName": "fill",
+                            "line": 185,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 29,
+                            "durationMicroseconds": 32,
+                            "functionName": "height",
+                            "line": 197,
+                            "message": "Cannot access value for name _loginShowError"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 30,
+                            "durationMicroseconds": 19,
+                            "functionName": "visible",
+                            "line": 202,
+                            "message": "Cannot access value for name _loginShowError"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 88,
+                            "durationMicroseconds": 53,
+                            "functionName": "type",
+                            "line": 205,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 43,
+                            "durationMicroseconds": 69,
+                            "functionName": "centerIn",
+                            "line": 208,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 42,
+                            "durationMicroseconds": 51,
+                            "functionName": "weight",
+                            "line": 219,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 21,
+                            "durationMicroseconds": 302,
+                            "functionName": "doLogin",
+                            "line": 236,
+                            "message": "Cannot access value for name dlgPasswordField"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 62,
+                            "durationMicroseconds": 62,
+                            "functionName": "color",
+                            "line": 232,
+                            "message": "Cannot access value for name dlgLoginBtnMa"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 62,
+                            "durationMicroseconds": 56,
+                            "functionName": "color",
+                            "line": 233,
+                            "message": "Cannot access value for name dlgLoginBtnMa"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 43,
+                            "durationMicroseconds": 55,
+                            "functionName": "centerIn",
+                            "line": 252,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 42,
+                            "durationMicroseconds": 87,
+                            "functionName": "weight",
+                            "line": 258,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 42,
+                            "durationMicroseconds": 49,
+                            "functionName": "weight",
+                            "line": 264,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 38,
+                            "durationMicroseconds": 56,
+                            "functionName": "cursorShape",
+                            "line": 272,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 36,
+                            "durationMicroseconds": 28,
+                            "functionName": "onClicked",
+                            "line": 273,
+                            "message": "Cannot access value for name dlgLoginBtn"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 39,
+                            "durationMicroseconds": 43,
+                            "functionName": "fill",
+                            "line": 270,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 26,
+                            "durationMicroseconds": 0,
+                            "functionName": "enabled",
+                            "line": 295,
+                            "message": "Could not find property \"enabled\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 30,
+                            "durationMicroseconds": 0,
+                            "functionName": "onTriggered",
+                            "line": 296,
+                            "message": "Could not find signal \"triggered\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 30,
+                            "durationMicroseconds": 0,
+                            "functionName": "onTriggered",
+                            "line": 301,
+                            "message": "Could not find signal \"triggered\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 26,
+                            "durationMicroseconds": 0,
+                            "functionName": "enabled",
+                            "line": 308,
+                            "message": "Could not find property \"enabled\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 30,
+                            "durationMicroseconds": 0,
+                            "functionName": "onTriggered",
+                            "line": 309,
+                            "message": "Could not find signal \"triggered\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 30,
+                            "durationMicroseconds": 0,
+                            "functionName": "onTriggered",
+                            "line": 313,
+                            "message": "Could not find signal \"triggered\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 26,
+                            "durationMicroseconds": 0,
+                            "functionName": "enabled",
+                            "line": 326,
+                            "message": "Could not find property \"enabled\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 30,
+                            "durationMicroseconds": 0,
+                            "functionName": "onTriggered",
+                            "line": 327,
+                            "message": "Could not find signal \"triggered\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 73,
+                            "durationMicroseconds": 0,
+                            "functionName": "enabled",
+                            "line": 329,
+                            "message": "Could not find property \"enabled\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 22,
+                            "durationMicroseconds": 0,
+                            "functionName": "enabled",
+                            "line": 333,
+                            "message": "Could not find property \"enabled\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 30,
+                            "durationMicroseconds": 0,
+                            "functionName": "onTriggered",
+                            "line": 337,
+                            "message": "Could not find signal \"triggered\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 30,
+                            "durationMicroseconds": 0,
+                            "functionName": "onTriggered",
+                            "line": 363,
+                            "message": "Could not find signal \"triggered\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 30,
+                            "durationMicroseconds": 0,
+                            "functionName": "onTriggered",
+                            "line": 414,
+                            "message": "Could not find signal \"triggered\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 20,
+                            "durationMicroseconds": 0,
+                            "functionName": "title",
+                            "line": 418,
+                            "message": "Could not find property \"title\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 23,
+                            "durationMicroseconds": 0,
+                            "functionName": "text",
+                            "line": 420,
+                            "message": "Could not find property \"text\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 30,
+                            "durationMicroseconds": 0,
+                            "functionName": "onTriggered",
+                            "line": 421,
+                            "message": "Could not find signal \"triggered\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 26,
+                            "durationMicroseconds": 0,
+                            "functionName": "checked",
+                            "line": 435,
+                            "message": "Could not find property \"checked\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 30,
+                            "durationMicroseconds": 0,
+                            "functionName": "onTriggered",
+                            "line": 436,
+                            "message": "Could not find signal \"triggered\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 26,
+                            "durationMicroseconds": 0,
+                            "functionName": "enabled",
+                            "line": 440,
+                            "message": "Could not find property \"enabled\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 26,
+                            "durationMicroseconds": 0,
+                            "functionName": "checked",
+                            "line": 442,
+                            "message": "Could not find property \"checked\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 30,
+                            "durationMicroseconds": 0,
+                            "functionName": "onTriggered",
+                            "line": 443,
+                            "message": "Could not find signal \"triggered\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 30,
+                            "durationMicroseconds": 0,
+                            "functionName": "onTriggered",
+                            "line": 450,
+                            "message": "Could not find signal \"triggered\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 30,
+                            "durationMicroseconds": 0,
+                            "functionName": "onTriggered",
+                            "line": 454,
+                            "message": "Could not find signal \"triggered\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 30,
+                            "durationMicroseconds": 0,
+                            "functionName": "onTriggered",
+                            "line": 458,
+                            "message": "Could not find signal \"triggered\"."
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 22,
+                            "durationMicroseconds": 88,
+                            "functionName": "top",
+                            "line": 465,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 23,
+                            "durationMicroseconds": 76,
+                            "functionName": "left",
+                            "line": 466,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 24,
+                            "durationMicroseconds": 118,
+                            "functionName": "right",
+                            "line": 467,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 27,
+                            "durationMicroseconds": 48,
+                            "functionName": "fill",
+                            "line": 474,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 27,
+                            "durationMicroseconds": 57,
+                            "functionName": "fillMode",
+                            "line": 483,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 30,
+                            "durationMicroseconds": 127,
+                            "functionName": "visible",
+                            "line": 489,
+                            "message": "Cannot load property status from (component in D:/CMN/ProjectAppCap-abcde/AutoTestWindow.qml)::parent with type QQuickItem."
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 35,
+                            "durationMicroseconds": 44,
+                            "functionName": "fill",
+                            "line": 486,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 46,
+                            "durationMicroseconds": 84,
+                            "functionName": "centerIn",
+                            "line": 490,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 23,
+                            "durationMicroseconds": 0,
+                            "functionName": "text",
+                            "line": 496,
+                            "message": "Could not find property \"text\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 24,
+                            "durationMicroseconds": 0,
+                            "functionName": "color",
+                            "line": 499,
+                            "message": "Could not find property \"color\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 28,
+                            "durationMicroseconds": 0,
+                            "functionName": "bold",
+                            "line": 501,
+                            "message": "Could not find property \"bold\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 21,
+                            "durationMicroseconds": 64,
+                            "functionName": "target",
+                            "line": 510,
+                            "message": "Cannot access value for name mcuSender"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 13,
+                            "durationMicroseconds": 211,
+                            "functionName": "onOpenChanged",
+                            "line": 511,
+                            "message": "Cannot access value for name mcuSender"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 22,
+                            "durationMicroseconds": 86,
+                            "functionName": "top",
+                            "line": 527,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 23,
+                            "durationMicroseconds": 119,
+                            "functionName": "left",
+                            "line": 528,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 24,
+                            "durationMicroseconds": 65,
+                            "functionName": "right",
+                            "line": 529,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 27,
+                            "durationMicroseconds": 56,
+                            "functionName": "fill",
+                            "line": 535,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 24,
+                            "durationMicroseconds": 168,
+                            "functionName": "model",
+                            "line": 540,
+                            "message": "Cannot generate efficient code for storing an array in a non-sequence type"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 28,
+                            "durationMicroseconds": 58,
+                            "functionName": "color",
+                            "line": 545,
+                            "message": "Cannot access value for name index"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 35,
+                            "durationMicroseconds": 50,
+                            "functionName": "color",
+                            "line": 546,
+                            "message": "Cannot access value for name index"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 31,
+                            "durationMicroseconds": 197,
+                            "functionName": "text",
+                            "line": 550,
+                            "message": "Cannot access value for name modelData"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 32,
+                            "durationMicroseconds": 174,
+                            "functionName": "color",
+                            "line": 551,
+                            "message": "Cannot access value for name index"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 43,
+                            "durationMicroseconds": 48,
+                            "functionName": "centerIn",
+                            "line": 549,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 36,
+                            "durationMicroseconds": 274,
+                            "functionName": "onClicked",
+                            "line": 557,
+                            "message": "Cannot access value for name window"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 39,
+                            "durationMicroseconds": 47,
+                            "functionName": "fill",
+                            "line": 556,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 18,
+                            "durationMicroseconds": 20,
+                            "functionName": "visible",
+                            "line": 574,
+                            "message": "Cannot retrieve a non-object type by ID: window"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 26,
+                            "durationMicroseconds": 20,
+                            "functionName": "currentPlanName",
+                            "line": 575,
+                            "message": "Cannot access value for name selectedPlanName"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 29,
+                            "durationMicroseconds": 11,
+                            "functionName": "notificationDialog",
+                            "line": 576,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 24,
+                            "durationMicroseconds": 54,
+                            "functionName": "interfaceMode",
+                            "line": 577,
+                            "message": "Cannot retrieve a non-object type by ID: window"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 25,
+                            "durationMicroseconds": 53,
+                            "functionName": "editPlanDialog",
+                            "line": 578,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 22,
+                            "durationMicroseconds": 72,
+                            "functionName": "top",
+                            "line": 570,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 23,
+                            "durationMicroseconds": 67,
+                            "functionName": "left",
+                            "line": 571,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 24,
+                            "durationMicroseconds": 63,
+                            "functionName": "right",
+                            "line": 572,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 25,
+                            "durationMicroseconds": 61,
+                            "functionName": "bottom",
+                            "line": 573,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 18,
+                            "durationMicroseconds": 19,
+                            "functionName": "visible",
+                            "line": 586,
+                            "message": "Cannot retrieve a non-object type by ID: window"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 26,
+                            "durationMicroseconds": 20,
+                            "functionName": "currentPlanName",
+                            "line": 587,
+                            "message": "Cannot access value for name selectedPlanName"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 26,
+                            "durationMicroseconds": 55,
+                            "functionName": "calibrationMode",
+                            "line": 588,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 22,
+                            "durationMicroseconds": 50,
+                            "functionName": "mainContent",
+                            "line": 589,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 22,
+                            "durationMicroseconds": 80,
+                            "functionName": "top",
+                            "line": 582,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 23,
+                            "durationMicroseconds": 65,
+                            "functionName": "left",
+                            "line": 583,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 24,
+                            "durationMicroseconds": 62,
+                            "functionName": "right",
+                            "line": 584,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 25,
+                            "durationMicroseconds": 108,
+                            "functionName": "bottom",
+                            "line": 585,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 16,
+                            "durationMicroseconds": 0,
+                            "functionName": "parent",
+                            "line": 593,
+                            "message": "Could not find property \"parent\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 17,
+                            "durationMicroseconds": 0,
+                            "functionName": "parent",
+                            "line": 597,
+                            "message": "Could not find property \"parent\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 17,
+                            "durationMicroseconds": 0,
+                            "functionName": "parent",
+                            "line": 601,
+                            "message": "Could not find property \"parent\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 21,
+                            "durationMicroseconds": 27,
+                            "functionName": "mainWindow",
+                            "line": 605,
+                            "message": "Cannot retrieve a non-object type by ID: window"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 21,
+                            "durationMicroseconds": 24,
+                            "functionName": "mainWindow",
+                            "line": 610,
+                            "message": "Cannot retrieve a non-object type by ID: window"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 22,
+                            "durationMicroseconds": 249,
+                            "functionName": "onPlanSaved",
+                            "line": 611,
+                            "message": "method addLog cannot be resolved."
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 22,
+                            "durationMicroseconds": 32,
+                            "functionName": "onPlanSaved",
+                            "line": 611,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 25,
+                            "durationMicroseconds": 24,
+                            "functionName": "mainWindow",
+                            "line": 624,
+                            "message": "Cannot access value for name window"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 22,
+                            "durationMicroseconds": 66661,
+                            "functionName": "onTriggered",
+                            "line": 632,
+                            "message": "Cannot access value for name calibrationDialogInstance"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 25,
+                            "durationMicroseconds": 44,
+                            "functionName": "mainWindow",
+                            "line": 686,
+                            "message": "Cannot access value for name window"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 16,
+                            "durationMicroseconds": 0,
+                            "functionName": "width",
+                            "line": 696,
+                            "message": "Could not find property \"width\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 17,
+                            "durationMicroseconds": 0,
+                            "functionName": "parent",
+                            "line": 699,
+                            "message": "Could not find property \"parent\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 22,
+                            "durationMicroseconds": 0,
+                            "functionName": "closePolicy",
+                            "line": 700,
+                            "message": "Could not find property \"closePolicy\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 26,
+                            "durationMicroseconds": 0,
+                            "functionName": "standardButtons",
+                            "line": 701,
+                            "message": "Could not find property \"standardButtons\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 12,
+                            "durationMicroseconds": 0,
+                            "functionName": "y",
+                            "line": 703,
+                            "message": "Could not find property \"y\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 31,
+                            "durationMicroseconds": 81,
+                            "functionName": "scripts",
+                            "line": 707,
+                            "message": "Cannot generate efficient code for storing an array in a non-sequence type"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 43,
+                            "durationMicroseconds": 56,
+                            "functionName": "validScriptsForPair",
+                            "line": 730,
+                            "message": "Cannot generate efficient code for storing an array in a non-sequence type"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 37,
+                            "durationMicroseconds": 49,
+                            "functionName": "readingValues",
+                            "line": 735,
+                            "message": "Cannot generate efficient code for storing an array in a non-sequence type"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 41,
+                            "durationMicroseconds": 45,
+                            "functionName": "allConnectorPairs",
+                            "line": 739,
+                            "message": "Cannot generate efficient code for storing an array in a non-sequence type"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 9,
+                            "durationMicroseconds": 2174,
+                            "functionName": "buildConnectorPairList",
+                            "line": 742,
+                            "message": "Cannot load property length from (component in D:/CMN/ProjectAppCap-abcde/AutoTestWindow.qml)::scripts with type QVariant."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 9,
+                            "durationMicroseconds": 207,
+                            "functionName": "resetState",
+                            "line": 761,
+                            "message": "Cannot generate efficient code for storing an array in a non-sequence type"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 27,
+                            "durationMicroseconds": 0,
+                            "functionName": "onVisibleChanged",
+                            "line": 775,
+                            "message": "Could not find signal \"visibleChanged\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 9,
+                            "durationMicroseconds": 0,
+                            "functionName": "_handleReadingValue",
+                            "line": 941,
+                            "message": "Functions without type annotations won't be compiled"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 9,
+                            "durationMicroseconds": 158,
+                            "functionName": "_resetReadingState",
+                            "line": 994,
+                            "message": "Cannot generate efficient code for storing an array in a non-sequence type"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 9,
+                            "durationMicroseconds": 355,
+                            "functionName": "_advanceToNextMeasurement",
+                            "line": 1003,
+                            "message": "Cannot access value for name mcuSender"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 9,
+                            "durationMicroseconds": 6243,
+                            "functionName": "_getValidScriptsForCurrentPair",
+                            "line": 1105,
+                            "message": "Cannot load property length from (component in D:/CMN/ProjectAppCap-abcde/AutoTestWindow.qml)::scripts with type QVariant."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 21,
+                            "durationMicroseconds": 0,
+                            "functionName": "onAccepted",
+                            "line": 1760,
+                            "message": "Could not find signal \"accepted\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 21,
+                            "durationMicroseconds": 0,
+                            "functionName": "onRejected",
+                            "line": 1773,
+                            "message": "Could not find signal \"rejected\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 26,
+                            "durationMicroseconds": 625,
+                            "functionName": "onStopRequested",
+                            "line": 1779,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 21,
+                            "durationMicroseconds": 63,
+                            "functionName": "target",
+                            "line": 814,
+                            "message": "Cannot access value for name mcuSender"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 13,
+                            "durationMicroseconds": 269,
+                            "functionName": "onQueueChanged",
+                            "line": 817,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 13,
+                            "durationMicroseconds": 198,
+                            "functionName": "onAllPacketsSent",
+                            "line": 826,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 13,
+                            "durationMicroseconds": 166,
+                            "functionName": "onMcuReadyForTest",
+                            "line": 838,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 13,
+                            "durationMicroseconds": 376,
+                            "functionName": "onMcuStartTestResponse",
+                            "line": 853,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 26,
+                            "durationMicroseconds": 1962,
+                            "functionName": "onTriggered",
+                            "line": 883,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 21,
+                            "durationMicroseconds": 55,
+                            "functionName": "target",
+                            "line": 1026,
+                            "message": "Cannot access value for name keithley2110"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 13,
+                            "durationMicroseconds": 0,
+                            "functionName": "onResistanceRead",
+                            "line": 1027,
+                            "message": "Functions without type annotations won't be compiled"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 13,
+                            "durationMicroseconds": 0,
+                            "functionName": "onErrorOccurred",
+                            "line": 1036,
+                            "message": "Functions without type annotations won't be compiled"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 26,
+                            "durationMicroseconds": 71,
+                            "functionName": "onTriggered",
+                            "line": 1063,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 26,
+                            "durationMicroseconds": 698,
+                            "functionName": "onTriggered",
+                            "line": 1078,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 27,
+                            "durationMicroseconds": 75,
+                            "functionName": "fill",
+                            "line": 1172,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 27,
+                            "durationMicroseconds": 80,
+                            "functionName": "text",
+                            "line": 1185,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 39,
+                            "durationMicroseconds": 58,
+                            "functionName": "centerIn",
+                            "line": 1184,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 34,
+                            "durationMicroseconds": 68,
+                            "functionName": "cursorShape",
+                            "line": 1193,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 46,
+                            "durationMicroseconds": 223,
+                            "functionName": "pressPos",
+                            "line": 1194,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 32,
+                            "durationMicroseconds": 250,
+                            "functionName": "onPressed",
+                            "line": 1195,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 32,
+                            "durationMicroseconds": 33,
+                            "functionName": "onPressed",
+                            "line": 1195,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 40,
+                            "durationMicroseconds": 106,
+                            "functionName": "onPositionChanged",
+                            "line": 1198,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 40,
+                            "durationMicroseconds": 31,
+                            "functionName": "onPositionChanged",
+                            "line": 1198,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 35,
+                            "durationMicroseconds": 46,
+                            "functionName": "fill",
+                            "line": 1192,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 32,
+                            "durationMicroseconds": 67,
+                            "functionName": "contentHeight",
+                            "line": 1215,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 33,
+                            "durationMicroseconds": 61,
+                            "functionName": "boundsBehavior",
+                            "line": 1217,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 37,
+                            "durationMicroseconds": 48,
+                            "functionName": "flickableDirection",
+                            "line": 1218,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 24,
+                            "durationMicroseconds": 62,
+                            "functionName": "width",
+                            "line": 1222,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 27,
+                            "durationMicroseconds": 55,
+                            "functionName": "wrapMode",
+                            "line": 1230,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 26,
+                            "durationMicroseconds": 32,
+                            "functionName": "visible",
+                            "line": 1240,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 35,
+                            "durationMicroseconds": 48,
+                            "functionName": "fill",
+                            "line": 1243,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 32,
+                            "durationMicroseconds": 0,
+                            "functionName": "model",
+                            "line": 1257,
+                            "message": "Could not find property \"model\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 39,
+                            "durationMicroseconds": 0,
+                            "functionName": "currentIndex",
+                            "line": 1265,
+                            "message": "Could not find property \"currentIndex\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 34,
+                            "durationMicroseconds": 0,
+                            "functionName": "enabled",
+                            "line": 1266,
+                            "message": "Could not find property \"enabled\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 38,
+                            "durationMicroseconds": 0,
+                            "functionName": "onActivated",
+                            "line": 1267,
+                            "message": "Could not find signal \"activated\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 38,
+                            "durationMicroseconds": 0,
+                            "functionName": "onActivated",
+                            "line": 1267,
+                            "message": "Could not find signal \"activated\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 31,
+                            "durationMicroseconds": 64,
+                            "functionName": "text",
+                            "line": 1292,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 23,
+                            "durationMicroseconds": 96,
+                            "functionName": "text",
+                            "line": 1302,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 27,
+                            "durationMicroseconds": 67,
+                            "functionName": "wrapMode",
+                            "line": 1306,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 23,
+                            "durationMicroseconds": 63,
+                            "functionName": "text",
+                            "line": 1311,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 27,
+                            "durationMicroseconds": 56,
+                            "functionName": "wrapMode",
+                            "line": 1315,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 41,
+                            "durationMicroseconds": 140,
+                            "functionName": "preferredHeight",
+                            "line": 1321,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 35,
+                            "durationMicroseconds": 56,
+                            "functionName": "fill",
+                            "line": 1328,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 38,
+                            "durationMicroseconds": 0,
+                            "functionName": "checked",
+                            "line": 1347,
+                            "message": "Could not find property \"checked\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 38,
+                            "durationMicroseconds": 0,
+                            "functionName": "enabled",
+                            "line": 1350,
+                            "message": "Could not find property \"enabled\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 47,
+                            "durationMicroseconds": 0,
+                            "functionName": "onCheckedChanged",
+                            "line": 1351,
+                            "message": "Could not find signal \"checkedChanged\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 38,
+                            "durationMicroseconds": 0,
+                            "functionName": "checked",
+                            "line": 1358,
+                            "message": "Could not find property \"checked\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 38,
+                            "durationMicroseconds": 0,
+                            "functionName": "enabled",
+                            "line": 1361,
+                            "message": "Could not find property \"enabled\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 47,
+                            "durationMicroseconds": 0,
+                            "functionName": "onCheckedChanged",
+                            "line": 1362,
+                            "message": "Could not find signal \"checkedChanged\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 38,
+                            "durationMicroseconds": 0,
+                            "functionName": "checked",
+                            "line": 1369,
+                            "message": "Could not find property \"checked\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 38,
+                            "durationMicroseconds": 0,
+                            "functionName": "enabled",
+                            "line": 1372,
+                            "message": "Could not find property \"enabled\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 47,
+                            "durationMicroseconds": 0,
+                            "functionName": "onCheckedChanged",
+                            "line": 1373,
+                            "message": "Could not find signal \"checkedChanged\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 38,
+                            "durationMicroseconds": 0,
+                            "functionName": "checked",
+                            "line": 1380,
+                            "message": "Could not find property \"checked\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 38,
+                            "durationMicroseconds": 0,
+                            "functionName": "enabled",
+                            "line": 1383,
+                            "message": "Could not find property \"enabled\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 47,
+                            "durationMicroseconds": 0,
+                            "functionName": "onCheckedChanged",
+                            "line": 1384,
+                            "message": "Could not find signal \"checkedChanged\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 24,
+                            "durationMicroseconds": 89,
+                            "functionName": "color",
+                            "line": 1396,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 31,
+                            "durationMicroseconds": 70,
+                            "functionName": "color",
+                            "line": 1401,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 27,
+                            "durationMicroseconds": 62,
+                            "functionName": "text",
+                            "line": 1410,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 28,
+                            "durationMicroseconds": 74,
+                            "functionName": "color",
+                            "line": 1412,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 39,
+                            "durationMicroseconds": 82,
+                            "functionName": "centerIn",
+                            "line": 1409,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 32,
+                            "durationMicroseconds": 42,
+                            "functionName": "bold",
+                            "line": 1417,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 26,
+                            "durationMicroseconds": 37,
+                            "functionName": "visible",
+                            "line": 1427,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 29,
+                            "durationMicroseconds": 69,
+                            "functionName": "height",
+                            "line": 1430,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 28,
+                            "durationMicroseconds": 31,
+                            "functionName": "color",
+                            "line": 1432,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 28,
+                            "durationMicroseconds": 614,
+                            "functionName": "width",
+                            "line": 1433,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 24,
+                            "durationMicroseconds": 72,
+                            "functionName": "color",
+                            "line": 1450,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 41,
+                            "durationMicroseconds": 215,
+                            "functionName": "preferredHeight",
+                            "line": 1448,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 31,
+                            "durationMicroseconds": 73,
+                            "functionName": "color",
+                            "line": 1455,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 35,
+                            "durationMicroseconds": 53,
+                            "functionName": "fill",
+                            "line": 1464,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 31,
+                            "durationMicroseconds": 73,
+                            "functionName": "text",
+                            "line": 1471,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 32,
+                            "durationMicroseconds": 38,
+                            "functionName": "color",
+                            "line": 1482,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 35,
+                            "durationMicroseconds": 59,
+                            "functionName": "wrapMode",
+                            "line": 1485,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 31,
+                            "durationMicroseconds": 361,
+                            "functionName": "text",
+                            "line": 1491,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 35,
+                            "durationMicroseconds": 58,
+                            "functionName": "wrapMode",
+                            "line": 1503,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 28,
+                            "durationMicroseconds": 379,
+                            "functionName": "color",
+                            "line": 1521,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 43,
+                            "durationMicroseconds": 57,
+                            "functionName": "centerIn",
+                            "line": 1526,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 87,
+                            "durationMicroseconds": 87,
+                            "functionName": "verticalCenter",
+                            "line": 1528,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 114,
+                            "durationMicroseconds": 138,
+                            "functionName": "verticalCenter",
+                            "line": 1529,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 38,
+                            "durationMicroseconds": 68,
+                            "functionName": "cursorShape",
+                            "line": 1535,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 36,
+                            "durationMicroseconds": 38,
+                            "functionName": "onClicked",
+                            "line": 1536,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 39,
+                            "durationMicroseconds": 47,
+                            "functionName": "fill",
+                            "line": 1533,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 30,
+                            "durationMicroseconds": 40,
+                            "functionName": "visible",
+                            "line": 1547,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 30,
+                            "durationMicroseconds": 24,
+                            "functionName": "opacity",
+                            "line": 1548,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 28,
+                            "durationMicroseconds": 242,
+                            "functionName": "color",
+                            "line": 1549,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 43,
+                            "durationMicroseconds": 59,
+                            "functionName": "centerIn",
+                            "line": 1554,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 38,
+                            "durationMicroseconds": 30,
+                            "functionName": "text",
+                            "line": 1556,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 125,
+                            "durationMicroseconds": 88,
+                            "functionName": "verticalCenter",
+                            "line": 1556,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 35,
+                            "durationMicroseconds": 47,
+                            "functionName": "text",
+                            "line": 1558,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 53,
+                            "durationMicroseconds": 78,
+                            "functionName": "verticalCenter",
+                            "line": 1560,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 38,
+                            "durationMicroseconds": 89,
+                            "functionName": "cursorShape",
+                            "line": 1567,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 34,
+                            "durationMicroseconds": 37,
+                            "functionName": "enabled",
+                            "line": 1568,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 36,
+                            "durationMicroseconds": 992,
+                            "functionName": "onClicked",
+                            "line": 1569,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 39,
+                            "durationMicroseconds": 56,
+                            "functionName": "fill",
+                            "line": 1565,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 30,
+                            "durationMicroseconds": 170,
+                            "functionName": "visible",
+                            "line": 1602,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 28,
+                            "durationMicroseconds": 64,
+                            "functionName": "color",
+                            "line": 1603,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 35,
+                            "durationMicroseconds": 29,
+                            "functionName": "color",
+                            "line": 1606,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 43,
+                            "durationMicroseconds": 68,
+                            "functionName": "centerIn",
+                            "line": 1610,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 35,
+                            "durationMicroseconds": 28,
+                            "functionName": "text",
+                            "line": 1613,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 73,
+                            "durationMicroseconds": 78,
+                            "functionName": "verticalCenter",
+                            "line": 1614,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 35,
+                            "durationMicroseconds": 43,
+                            "functionName": "text",
+                            "line": 1617,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 53,
+                            "durationMicroseconds": 77,
+                            "functionName": "verticalCenter",
+                            "line": 1619,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 38,
+                            "durationMicroseconds": 65,
+                            "functionName": "cursorShape",
+                            "line": 1626,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 36,
+                            "durationMicroseconds": 2298,
+                            "functionName": "onClicked",
+                            "line": 1627,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 39,
+                            "durationMicroseconds": 97,
+                            "functionName": "fill",
+                            "line": 1624,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 30,
+                            "durationMicroseconds": 53,
+                            "functionName": "visible",
+                            "line": 1672,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 30,
+                            "durationMicroseconds": 46,
+                            "functionName": "opacity",
+                            "line": 1673,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 28,
+                            "durationMicroseconds": 272,
+                            "functionName": "color",
+                            "line": 1674,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 34,
+                            "durationMicroseconds": 55,
+                            "functionName": "running",
+                            "line": 1679,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 32,
+                            "durationMicroseconds": 62,
+                            "functionName": "loops",
+                            "line": 1680,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 43,
+                            "durationMicroseconds": 92,
+                            "functionName": "centerIn",
+                            "line": 1686,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 35,
+                            "durationMicroseconds": 57,
+                            "functionName": "text",
+                            "line": 1689,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 73,
+                            "durationMicroseconds": 87,
+                            "functionName": "verticalCenter",
+                            "line": 1690,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 35,
+                            "durationMicroseconds": 76,
+                            "functionName": "text",
+                            "line": 1693,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 53,
+                            "durationMicroseconds": 185,
+                            "functionName": "verticalCenter",
+                            "line": 1695,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 38,
+                            "durationMicroseconds": 172,
+                            "functionName": "cursorShape",
+                            "line": 1702,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 34,
+                            "durationMicroseconds": 99,
+                            "functionName": "enabled",
+                            "line": 1703,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 36,
+                            "durationMicroseconds": 855,
+                            "functionName": "onClicked",
+                            "line": 1704,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 39,
+                            "durationMicroseconds": 71,
+                            "functionName": "fill",
+                            "line": 1700,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 30,
+                            "durationMicroseconds": 24,
+                            "functionName": "visible",
+                            "line": 1721,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 28,
+                            "durationMicroseconds": 277,
+                            "functionName": "color",
+                            "line": 1722,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 34,
+                            "durationMicroseconds": 22,
+                            "functionName": "running",
+                            "line": 1727,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 32,
+                            "durationMicroseconds": 60,
+                            "functionName": "loops",
+                            "line": 1728,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 81,
+                            "durationMicroseconds": 60,
+                            "functionName": "type",
+                            "line": 1729,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 80,
+                            "durationMicroseconds": 95,
+                            "functionName": "type",
+                            "line": 1730,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 43,
+                            "durationMicroseconds": 50,
+                            "functionName": "centerIn",
+                            "line": 1734,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 87,
+                            "durationMicroseconds": 77,
+                            "functionName": "verticalCenter",
+                            "line": 1736,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 53,
+                            "durationMicroseconds": 77,
+                            "functionName": "verticalCenter",
+                            "line": 1740,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 38,
+                            "durationMicroseconds": 67,
+                            "functionName": "cursorShape",
+                            "line": 1747,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 36,
+                            "durationMicroseconds": 184,
+                            "functionName": "onClicked",
+                            "line": 1748,
+                            "message": "Cannot retrieve a non-object type by ID: notificationDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 39,
+                            "durationMicroseconds": 50,
+                            "functionName": "fill",
+                            "line": 1745,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 32,
+                            "durationMicroseconds": 152,
+                            "functionName": "onCompleted",
+                            "line": 1756,
+                            "message": "Cannot access value for name width"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 28,
+                            "durationMicroseconds": 233,
+                            "functionName": "onCompleted",
+                            "line": 1811,
+                            "message": "Cannot access value for name fileHelper"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 25,
+                            "durationMicroseconds": 26,
+                            "functionName": "mainWindow",
+                            "line": 1825,
+                            "message": "Cannot access value for name window"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 17,
+                            "durationMicroseconds": 52,
+                            "functionName": "target",
+                            "line": 1831,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 9,
+                            "durationMicroseconds": 0,
+                            "functionName": "onRequestCreateAutoTestPlan",
+                            "line": 1832,
+                            "message": "Functions without type annotations won't be compiled"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 17,
+                            "durationMicroseconds": 22,
+                            "functionName": "target",
+                            "line": 1838,
+                            "message": "Cannot access value for name testPlanListDialogInstance"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 9,
+                            "durationMicroseconds": 0,
+                            "functionName": "onPlanSelected",
+                            "line": 1839,
+                            "message": "Functions without type annotations won't be compiled"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 26,
+                            "durationMicroseconds": 0,
+                            "functionName": "standardButtons",
+                            "line": 1854,
+                            "message": "Could not find property \"standardButtons\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 27,
+                            "durationMicroseconds": 0,
+                            "functionName": "centerIn",
+                            "line": 1851,
+                            "message": "Could not find property \"centerIn\"."
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 20,
+                            "durationMicroseconds": 64,
+                            "functionName": "width",
+                            "line": 1864,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 24,
+                            "durationMicroseconds": 63,
+                            "functionName": "width",
+                            "line": 1874,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 33,
+                            "durationMicroseconds": 75,
+                            "functionName": "bottom",
+                            "line": 1873,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 35,
+                            "durationMicroseconds": 44,
+                            "functionName": "centerIn",
+                            "line": 1878,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 47,
+                            "durationMicroseconds": 76,
+                            "functionName": "horizontalCenter",
+                            "line": 1883,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 34,
+                            "durationMicroseconds": 56,
+                            "functionName": "weight",
+                            "line": 1888,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 47,
+                            "durationMicroseconds": 71,
+                            "functionName": "horizontalCenter",
+                            "line": 1890,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 29,
+                            "durationMicroseconds": 30,
+                            "functionName": "implicitHeight",
+                            "line": 1896,
+                            "message": "Cannot access value for name aboutCol"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 31,
+                            "durationMicroseconds": 105,
+                            "functionName": "left",
+                            "line": 1899,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 32,
+                            "durationMicroseconds": 74,
+                            "functionName": "right",
+                            "line": 1900,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 30,
+                            "durationMicroseconds": 70,
+                            "functionName": "top",
+                            "line": 1901,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 28,
+                            "durationMicroseconds": 59,
+                            "functionName": "width",
+                            "line": 1907,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 29,
+                            "durationMicroseconds": 32,
+                            "functionName": "height",
+                            "line": 1908,
+                            "message": "Cannot access value for name versionCol"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 43,
+                            "durationMicroseconds": 46,
+                            "functionName": "centerIn",
+                            "line": 1916,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 42,
+                            "durationMicroseconds": 160,
+                            "functionName": "weight",
+                            "line": 1921,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 55,
+                            "durationMicroseconds": 75,
+                            "functionName": "horizontalCenter",
+                            "line": 1923,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 55,
+                            "durationMicroseconds": 71,
+                            "functionName": "horizontalCenter",
+                            "line": 1929,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 28,
+                            "durationMicroseconds": 58,
+                            "functionName": "width",
+                            "line": 1936,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 31,
+                            "durationMicroseconds": 61,
+                            "functionName": "wrapMode",
+                            "line": 1940,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 32,
+                            "durationMicroseconds": 286,
+                            "functionName": "model",
+                            "line": 1946,
+                            "message": "Cannot generate efficient code for storing an array in a non-sequence type"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 35,
+                            "durationMicroseconds": 47,
+                            "functionName": "text",
+                            "line": 1956,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 39,
+                            "durationMicroseconds": 53,
+                            "functionName": "wrapMode",
+                            "line": 1959,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 28,
+                            "durationMicroseconds": 60,
+                            "functionName": "width",
+                            "line": 1966,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 28,
+                            "durationMicroseconds": 60,
+                            "functionName": "width",
+                            "line": 1972,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 42,
+                            "durationMicroseconds": 55,
+                            "functionName": "horizontalAlignment",
+                            "line": 1976,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 26,
+                            "durationMicroseconds": 0,
+                            "functionName": "standardButtons",
+                            "line": 1994,
+                            "message": "Could not find property \"standardButtons\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 27,
+                            "durationMicroseconds": 0,
+                            "functionName": "centerIn",
+                            "line": 1990,
+                            "message": "Could not find property \"centerIn\"."
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 20,
+                            "durationMicroseconds": 183,
+                            "functionName": "width",
+                            "line": 1999,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 63,
+                            "durationMicroseconds": 95,
+                            "functionName": "width",
+                            "line": 2004,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 41,
+                            "durationMicroseconds": 99,
+                            "functionName": "bottom",
+                            "line": 2004,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 35,
+                            "durationMicroseconds": 65,
+                            "functionName": "centerIn",
+                            "line": 2006,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 100,
+                            "durationMicroseconds": 80,
+                            "functionName": "weight",
+                            "line": 2008,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 31,
+                            "durationMicroseconds": 87,
+                            "functionName": "fill",
+                            "line": 2014,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 28,
+                            "durationMicroseconds": 97,
+                            "functionName": "width",
+                            "line": 2019,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 69,
+                            "durationMicroseconds": 85,
+                            "functionName": "wrapMode",
+                            "line": 2021,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 91,
+                            "durationMicroseconds": 123,
+                            "functionName": "weight",
+                            "line": 2025,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 28,
+                            "durationMicroseconds": 76,
+                            "functionName": "width",
+                            "line": 2028,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 39,
+                            "durationMicroseconds": 115,
+                            "functionName": "left",
+                            "line": 2031,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 100,
+                            "durationMicroseconds": 73,
+                            "functionName": "verticalCenter",
+                            "line": 2031,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 39,
+                            "durationMicroseconds": 112,
+                            "functionName": "width",
+                            "line": 2033,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 71,
+                            "durationMicroseconds": 48,
+                            "functionName": "text",
+                            "line": 2033,
+                            "message": "Cannot access value for name _resultsPath"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 164,
+                            "durationMicroseconds": 65,
+                            "functionName": "elide",
+                            "line": 2033,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 41,
+                            "durationMicroseconds": 62,
+                            "functionName": "width",
+                            "line": 2038,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 32,
+                            "durationMicroseconds": 123,
+                            "functionName": "width",
+                            "line": 2040,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 32,
+                            "durationMicroseconds": 70,
+                            "functionName": "color",
+                            "line": 2041,
+                            "message": "Cannot access value for name _rfOpenMa"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 50,
+                            "durationMicroseconds": 46,
+                            "functionName": "centerIn",
+                            "line": 2042,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 136,
+                            "durationMicroseconds": 54,
+                            "functionName": "weight",
+                            "line": 2042,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 107,
+                            "durationMicroseconds": 112,
+                            "functionName": "cursorShape",
+                            "line": 2043,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 40,
+                            "durationMicroseconds": 111,
+                            "functionName": "onClicked",
+                            "line": 2044,
+                            "message": "Cannot access value for name _resultsPath"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 66,
+                            "durationMicroseconds": 46,
+                            "functionName": "fill",
+                            "line": 2043,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 32,
+                            "durationMicroseconds": 122,
+                            "functionName": "width",
+                            "line": 2048,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 32,
+                            "durationMicroseconds": 64,
+                            "functionName": "color",
+                            "line": 2049,
+                            "message": "Cannot access value for name _rfChangeMa"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 50,
+                            "durationMicroseconds": 49,
+                            "functionName": "centerIn",
+                            "line": 2050,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 137,
+                            "durationMicroseconds": 55,
+                            "functionName": "weight",
+                            "line": 2050,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 109,
+                            "durationMicroseconds": 64,
+                            "functionName": "cursorShape",
+                            "line": 2051,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 40,
+                            "durationMicroseconds": 32,
+                            "functionName": "onClicked",
+                            "line": 2052,
+                            "message": "Cannot access value for name resultsFolderPicker"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 68,
+                            "durationMicroseconds": 46,
+                            "functionName": "fill",
+                            "line": 2051,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 32,
+                            "durationMicroseconds": 124,
+                            "functionName": "width",
+                            "line": 2056,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 32,
+                            "durationMicroseconds": 70,
+                            "functionName": "color",
+                            "line": 2057,
+                            "message": "Cannot access value for name _rfCopyMa"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 64,
+                            "durationMicroseconds": 90,
+                            "functionName": "text",
+                            "line": 2059,
+                            "message": "Cannot load property _rfCopied from (component in D:/CMN/ProjectAppCap-abcde/AutoTestWindow.qml)::parent with type QQuickItem."
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 50,
+                            "durationMicroseconds": 48,
+                            "functionName": "centerIn",
+                            "line": 2059,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 175,
+                            "durationMicroseconds": 58,
+                            "functionName": "weight",
+                            "line": 2059,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 107,
+                            "durationMicroseconds": 62,
+                            "functionName": "cursorShape",
+                            "line": 2060,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 40,
+                            "durationMicroseconds": 263,
+                            "functionName": "onClicked",
+                            "line": 2061,
+                            "message": "Cannot access value for name _resultsPath"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 66,
+                            "durationMicroseconds": 48,
+                            "functionName": "fill",
+                            "line": 2060,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 80,
+                            "durationMicroseconds": 18,
+                            "functionName": "onTriggered",
+                            "line": 2063,
+                            "message": "Type (component in D:/CMN/ProjectAppCap-abcde/AutoTestWindow.qml)::parent with type QObject does not have a property _rfCopied for writing"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 46,
+                            "durationMicroseconds": 63,
+                            "functionName": "width",
+                            "line": 2067,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 119,
+                            "durationMicroseconds": 53,
+                            "functionName": "horizontalAlignment",
+                            "line": 2067,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 147,
+                            "durationMicroseconds": 76,
+                            "functionName": "visible",
+                            "line": 2067,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 74,
+                            "durationMicroseconds": 30,
+                            "functionName": "onTriggered",
+                            "line": 2068,
+                            "message": "Cannot access value for name _rfStatus"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 28,
+                            "durationMicroseconds": 61,
+                            "functionName": "width",
+                            "line": 2071,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 28,
+                            "durationMicroseconds": 39,
+                            "functionName": "color",
+                            "line": 2072,
+                            "message": "Cannot access value for name _rfCloseMa"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 46,
+                            "durationMicroseconds": 47,
+                            "functionName": "centerIn",
+                            "line": 2073,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 104,
+                            "durationMicroseconds": 59,
+                            "functionName": "cursorShape",
+                            "line": 2074,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 138,
+                            "durationMicroseconds": 30,
+                            "functionName": "onClicked",
+                            "line": 2074,
+                            "message": "Cannot access value for name resultsFolderDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 63,
+                            "durationMicroseconds": 53,
+                            "functionName": "fill",
+                            "line": 2074,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 21,
+                            "durationMicroseconds": 370,
+                            "functionName": "onAccepted",
+                            "line": 2083,
+                            "message": "Cannot find name _resultsPath"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 26,
+                            "durationMicroseconds": 0,
+                            "functionName": "standardButtons",
+                            "line": 2112,
+                            "message": "Could not find property \"standardButtons\"."
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 27,
+                            "durationMicroseconds": 0,
+                            "functionName": "centerIn",
+                            "line": 2108,
+                            "message": "Could not find property \"centerIn\"."
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 20,
+                            "durationMicroseconds": 65,
+                            "functionName": "width",
+                            "line": 2117,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 63,
+                            "durationMicroseconds": 59,
+                            "functionName": "width",
+                            "line": 2122,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 41,
+                            "durationMicroseconds": 79,
+                            "functionName": "bottom",
+                            "line": 2122,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 35,
+                            "durationMicroseconds": 48,
+                            "functionName": "centerIn",
+                            "line": 2124,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 98,
+                            "durationMicroseconds": 56,
+                            "functionName": "weight",
+                            "line": 2126,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 31,
+                            "durationMicroseconds": 51,
+                            "functionName": "fill",
+                            "line": 2132,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 28,
+                            "durationMicroseconds": 60,
+                            "functionName": "width",
+                            "line": 2137,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 69,
+                            "durationMicroseconds": 56,
+                            "functionName": "wrapMode",
+                            "line": 2139,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 91,
+                            "durationMicroseconds": 52,
+                            "functionName": "weight",
+                            "line": 2142,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 28,
+                            "durationMicroseconds": 61,
+                            "functionName": "width",
+                            "line": 2145,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 39,
+                            "durationMicroseconds": 73,
+                            "functionName": "left",
+                            "line": 2148,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 100,
+                            "durationMicroseconds": 69,
+                            "functionName": "verticalCenter",
+                            "line": 2148,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 39,
+                            "durationMicroseconds": 220,
+                            "functionName": "width",
+                            "line": 2150,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 71,
+                            "durationMicroseconds": 79,
+                            "functionName": "text",
+                            "line": 2150,
+                            "message": "Cannot access value for name _logPath"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 160,
+                            "durationMicroseconds": 129,
+                            "functionName": "elide",
+                            "line": 2150,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 41,
+                            "durationMicroseconds": 186,
+                            "functionName": "width",
+                            "line": 2155,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 32,
+                            "durationMicroseconds": 184,
+                            "functionName": "width",
+                            "line": 2157,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 32,
+                            "durationMicroseconds": 118,
+                            "functionName": "color",
+                            "line": 2158,
+                            "message": "Cannot access value for name _lfOpenMa"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 50,
+                            "durationMicroseconds": 105,
+                            "functionName": "centerIn",
+                            "line": 2159,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 136,
+                            "durationMicroseconds": 110,
+                            "functionName": "weight",
+                            "line": 2159,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 107,
+                            "durationMicroseconds": 111,
+                            "functionName": "cursorShape",
+                            "line": 2160,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 40,
+                            "durationMicroseconds": 190,
+                            "functionName": "onClicked",
+                            "line": 2161,
+                            "message": "Cannot access value for name _logPath"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 66,
+                            "durationMicroseconds": 75,
+                            "functionName": "fill",
+                            "line": 2160,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 32,
+                            "durationMicroseconds": 138,
+                            "functionName": "width",
+                            "line": 2165,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 32,
+                            "durationMicroseconds": 72,
+                            "functionName": "color",
+                            "line": 2166,
+                            "message": "Cannot access value for name _lfChangeMa"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 50,
+                            "durationMicroseconds": 51,
+                            "functionName": "centerIn",
+                            "line": 2167,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 137,
+                            "durationMicroseconds": 59,
+                            "functionName": "weight",
+                            "line": 2167,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 109,
+                            "durationMicroseconds": 67,
+                            "functionName": "cursorShape",
+                            "line": 2168,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 40,
+                            "durationMicroseconds": 36,
+                            "functionName": "onClicked",
+                            "line": 2169,
+                            "message": "Cannot access value for name logFolderPicker"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 68,
+                            "durationMicroseconds": 50,
+                            "functionName": "fill",
+                            "line": 2168,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 32,
+                            "durationMicroseconds": 132,
+                            "functionName": "width",
+                            "line": 2173,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 32,
+                            "durationMicroseconds": 73,
+                            "functionName": "color",
+                            "line": 2174,
+                            "message": "Cannot access value for name _lfCopyMa"
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 64,
+                            "durationMicroseconds": 98,
+                            "functionName": "text",
+                            "line": 2176,
+                            "message": "Cannot load property _lfCopied from (component in D:/CMN/ProjectAppCap-abcde/AutoTestWindow.qml)::parent with type QQuickItem."
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 50,
+                            "durationMicroseconds": 151,
+                            "functionName": "centerIn",
+                            "line": 2176,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 175,
+                            "durationMicroseconds": 64,
+                            "functionName": "weight",
+                            "line": 2176,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 107,
+                            "durationMicroseconds": 67,
+                            "functionName": "cursorShape",
+                            "line": 2177,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 40,
+                            "durationMicroseconds": 322,
+                            "functionName": "onClicked",
+                            "line": 2178,
+                            "message": "Cannot access value for name _logPath"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 66,
+                            "durationMicroseconds": 57,
+                            "functionName": "fill",
+                            "line": 2177,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 80,
+                            "durationMicroseconds": 21,
+                            "functionName": "onTriggered",
+                            "line": 2180,
+                            "message": "Type (component in D:/CMN/ProjectAppCap-abcde/AutoTestWindow.qml)::parent with type QObject does not have a property _lfCopied for writing"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 46,
+                            "durationMicroseconds": 81,
+                            "functionName": "width",
+                            "line": 2184,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 119,
+                            "durationMicroseconds": 58,
+                            "functionName": "horizontalAlignment",
+                            "line": 2184,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 147,
+                            "durationMicroseconds": 71,
+                            "functionName": "visible",
+                            "line": 2184,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 74,
+                            "durationMicroseconds": 34,
+                            "functionName": "onTriggered",
+                            "line": 2185,
+                            "message": "Cannot access value for name _lfStatus"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 28,
+                            "durationMicroseconds": 63,
+                            "functionName": "width",
+                            "line": 2188,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 28,
+                            "durationMicroseconds": 43,
+                            "functionName": "color",
+                            "line": 2189,
+                            "message": "Cannot access value for name _lfCloseMa"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 46,
+                            "durationMicroseconds": 50,
+                            "functionName": "centerIn",
+                            "line": 2190,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 104,
+                            "durationMicroseconds": 64,
+                            "functionName": "cursorShape",
+                            "line": 2191,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 138,
+                            "durationMicroseconds": 31,
+                            "functionName": "onClicked",
+                            "line": 2191,
+                            "message": "Cannot access value for name logFolderDialog"
+                        },
+                        {
+                            "codegenResult": 0,
+                            "column": 63,
+                            "durationMicroseconds": 47,
+                            "functionName": "fill",
+                            "line": 2191,
+                            "message": ""
+                        },
+                        {
+                            "codegenResult": 2,
+                            "column": 21,
+                            "durationMicroseconds": 369,
+                            "functionName": "onAccepted",
+                            "line": 2200,
+                            "message": "Cannot find name _logPath"
+                        }
+                    ],
+                    "filePath": "D:/CMN/ProjectAppCap-abcde/AutoTestWindow.qml"
+                }
+            ],
+            "moduleId": "CMN_TESTING(appCMN_TESTING)"
+        }
+    ]
+}

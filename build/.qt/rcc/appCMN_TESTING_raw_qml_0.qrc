@@ -1,0 +1,17 @@
+<RCC>
+  <qresource prefix="/qt/qml/CMN_TESTING/">
+    <file alias="Main.qml">D:/CMN/ProjectAppCap-abcde/Main.qml</file>
+    <file alias="AutoTestWindow.qml">D:/CMN/ProjectAppCap-abcde/AutoTestWindow.qml</file>
+    <file alias="MainContent.qml">D:/CMN/ProjectAppCap-abcde/MainContent.qml</file>
+    <file alias="ManualTestView.qml">D:/CMN/ProjectAppCap-abcde/ManualTestView.qml</file>
+    <file alias="AppConfigDialog.qml">D:/CMN/ProjectAppCap-abcde/AppConfigDialog.qml</file>
+    <file alias="DeviceConfigDialog.qml">D:/CMN/ProjectAppCap-abcde/DeviceConfigDialog.qml</file>
+    <file alias="CableListDialog.qml">D:/CMN/ProjectAppCap-abcde/CableListDialog.qml</file>
+    <file alias="AutoTestPlanDialog.qml">D:/CMN/ProjectAppCap-abcde/AutoTestPlanDialog.qml</file>
+    <file alias="TestPlanListDialog.qml">D:/CMN/ProjectAppCap-abcde/TestPlanListDialog.qml</file>
+    <file alias="CalibrationDialog.qml">D:/CMN/ProjectAppCap-abcde/CalibrationDialog.qml</file>
+    <file alias="CableCalibrationDialog.qml">D:/CMN/ProjectAppCap-abcde/CableCalibrationDialog.qml</file>
+    <file alias="ManualReadDialog.qml">D:/CMN/ProjectAppCap-abcde/ManualReadDialog.qml</file>
+  </qresource>
+</RCC>
+

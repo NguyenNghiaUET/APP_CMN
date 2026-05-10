@@ -1,0 +1,31 @@
+{
+	"backtrace" : 0,
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : 
+		[
+			"third_party/QXlsx/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			}
+		]
+	},
+	"folder" : 
+	{
+		"name" : "QtInternalTargets"
+	},
+	"id" : "QXlsx_autogen_timestamp_deps::@246fd2dd3a984c2618f9",
+	"isGeneratorProvided" : true,
+	"name" : "QXlsx_autogen_timestamp_deps",
+	"paths" : 
+	{
+		"build" : "QXlsx",
+		"source" : "third_party/QXlsx"
+	},
+	"sources" : [],
+	"type" : "UTILITY"
+}

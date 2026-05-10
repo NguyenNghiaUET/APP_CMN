@@ -1,0 +1,15 @@
+-rootPath
+D:/CMN/ProjectAppCap-abcde
+-cmake-output
+-output-file
+D:/CMN/ProjectAppCap-abcde/build/.qt/qml_imports/appCMN_TESTING_build.cmake
+-importPath
+D:/CMN/ProjectAppCap-abcde/build/CMN_TESTING
+-importPath
+D:/CMN/ProjectAppCap-abcde/build
+-importPath
+C:/Qt/6.10.1/mingw_64/qml
+-qrcFiles
+D:/CMN/ProjectAppCap-abcde/build/.qt/rcc/qmake_CMN_TESTING.qrc
+D:/CMN/ProjectAppCap-abcde/build/.qt/rcc/appCMN_TESTING_raw_qml_0.qrc
+D:/CMN/ProjectAppCap-abcde/build/.qt/rcc/appCMN_TESTING_raw_res_0.qrc

@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/qt/qml/CMN_TESTING">
+    <file alias="qmldir">D:/CMN/ProjectAppCap-abcde/build/CMN_TESTING/qmldir</file>
+  </qresource>
+</RCC>
+

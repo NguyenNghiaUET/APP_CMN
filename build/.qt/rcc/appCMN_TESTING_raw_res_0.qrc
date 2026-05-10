@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/qt/qml/CMN_TESTING/">
+    <file alias="logo.png">D:/CMN/ProjectAppCap-abcde/logo.png</file>
+  </qresource>
+</RCC>
+

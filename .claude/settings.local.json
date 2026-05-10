@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"d:\\\\CMN\\\\ProjectAppCap-abcde\\\\code chuyển mạch nguồn cần gộp vào đây\" -File -Recurse)",
+      "Bash(Select-Object FullName)",
+      "PowerShell(Copy-Item \"d:\\\\CMN\\\\ProjectAppCap-abcde\\\\Main.qml\" \"d:\\\\CMN\\\\ProjectAppCap-abcde\\\\AutoTestWindow.qml\")",
+      "Bash(Get-ChildItem \"C:\\\\Qt\" -Recurse -Filter \"qmake.exe\" -ErrorAction SilentlyContinue)",
+      "PowerShell(cmd /c \"dir C:\\\\Qt\")",
+      "PowerShell(cmd /c \"dir C:\\\\Qt\\\\6.10.1\")",
+      "PowerShell(cmd /c \"dir C:\\\\Qt\\\\Tools\")",
+      "PowerShell(cmd /c \"C:\\\\Qt\\\\Tools\\\\CMake_64\\\\bin\\\\cmake.exe -S D:\\\\CMN\\\\ProjectAppCap-abcde -B D:\\\\CMN\\\\ProjectAppCap-abcde\\\\build -DCMAKE_PREFIX_PATH=C:\\\\Qt\\\\6.10.1\\\\mingw_64 -DCMAKE_C_COMPILER=C:\\\\Qt\\\\Tools\\\\mingw1310_64\\\\bin\\\\gcc.exe -DCMAKE_CXX_COMPILER=C:\\\\Qt\\\\Tools\\\\mingw1310_64\\\\bin\\\\g++.exe -G Ninja -DCMAKE_MAKE_PROGRAM=C:\\\\Qt\\\\Tools\\\\Ninja\\\\ninja.exe 2>&1\")",
+      "PowerShell(& \"C:\\\\Qt\\\\6.10.1\\\\mingw_64\\\\bin\\\\windeployqt.exe\" --qmldir \"D:\\\\CMN\\\\ProjectAppCap-abcde\" \"D:\\\\CMN\\\\ProjectAppCap-abcde\\\\build\\\\appCMN_TESTING.exe\" 2>&1)",
+      "PowerShell(Start-Process \"D:\\\\CMN\\\\ProjectAppCap-abcde\\\\build\\\\appCMN_TESTING.exe\")",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git rm *)",
+      "Bash(git commit *)"
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+# Qt build artifacts
+build/
+build-*/
+*.pro.user
+*.pro.user.*
+.qmake.stash
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+install_manifest.txt
+*.cmake
+!CMakeLists.txt
+
+# Qt Creator
+*.autosave
+.qtcreator/
+
+# VS Code
+.vscode/
+
+# Compiled
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.a
+*.lib
+
+# Claude Code local settings
+.claude/settings.local.json

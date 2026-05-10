@@ -1,0 +1,339 @@
+{
+    "classes": [
+        {
+            "className": "McuSender",
+            "lineNumber": 13,
+            "methods": [
+                {
+                    "access": "public",
+                    "index": 13,
+                    "isConst": true,
+                    "lineNumber": 26,
+                    "name": "getAvailablePorts",
+                    "returnType": "QStringList"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "pairs",
+                            "type": "QVariantList"
+                        }
+                    ],
+                    "index": 14,
+                    "lineNumber": 39,
+                    "name": "sendPinPairs",
+                    "returnType": "bool"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "scripts",
+                            "type": "QVariantList"
+                        },
+                        {
+                            "name": "isCalibration",
+                            "type": "bool"
+                        }
+                    ],
+                    "index": 15,
+                    "lineNumber": 44,
+                    "name": "sendTestScripts",
+                    "returnType": "bool"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "scripts",
+                            "type": "QVariantList"
+                        }
+                    ],
+                    "index": 16,
+                    "isCloned": true,
+                    "lineNumber": 44,
+                    "name": "sendTestScripts",
+                    "returnType": "bool"
+                },
+                {
+                    "access": "public",
+                    "index": 17,
+                    "lineNumber": 46,
+                    "name": "openPort",
+                    "returnType": "bool"
+                },
+                {
+                    "access": "public",
+                    "index": 18,
+                    "lineNumber": 47,
+                    "name": "closePort",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "index": 19,
+                    "lineNumber": 50,
+                    "name": "sendTestPacket",
+                    "returnType": "bool"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "hexString",
+                            "type": "QString"
+                        }
+                    ],
+                    "index": 20,
+                    "lineNumber": 53,
+                    "name": "debugHexPacket",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "index": 21,
+                    "lineNumber": 56,
+                    "name": "cancelQueue",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "index": 22,
+                    "lineNumber": 59,
+                    "name": "sendNextScript",
+                    "returnType": "void"
+                }
+            ],
+            "object": true,
+            "properties": [
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": false,
+                    "index": 0,
+                    "lineNumber": 16,
+                    "name": "portName",
+                    "notify": "portNameChanged",
+                    "read": "portName",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "QString",
+                    "user": false,
+                    "write": "setPortName"
+                },
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": false,
+                    "index": 1,
+                    "lineNumber": 17,
+                    "name": "baudRate",
+                    "notify": "baudRateChanged",
+                    "read": "baudRate",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "int",
+                    "user": false,
+                    "write": "setBaudRate"
+                },
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": false,
+                    "index": 2,
+                    "lineNumber": 18,
+                    "name": "isOpen",
+                    "notify": "openChanged",
+                    "read": "isOpen",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "bool",
+                    "user": false
+                },
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": false,
+                    "index": 3,
+                    "lineNumber": 19,
+                    "name": "queuedPacketCount",
+                    "notify": "queueChanged",
+                    "read": "queuedPacketCount",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "int",
+                    "user": false
+                },
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": false,
+                    "index": 4,
+                    "lineNumber": 20,
+                    "name": "currentPacketIndex",
+                    "notify": "queueChanged",
+                    "read": "currentPacketIndex",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "int",
+                    "user": false
+                },
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": false,
+                    "index": 5,
+                    "lineNumber": 21,
+                    "name": "isSendingQueue",
+                    "notify": "queueChanged",
+                    "read": "isSendingQueue",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "bool",
+                    "user": false
+                }
+            ],
+            "qualifiedClassName": "McuSender",
+            "signals": [
+                {
+                    "access": "public",
+                    "index": 0,
+                    "lineNumber": 62,
+                    "name": "portNameChanged",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "index": 1,
+                    "lineNumber": 63,
+                    "name": "baudRateChanged",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "index": 2,
+                    "lineNumber": 64,
+                    "name": "openChanged",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "index": 3,
+                    "lineNumber": 65,
+                    "name": "queueChanged",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "count",
+                            "type": "int"
+                        }
+                    ],
+                    "index": 4,
+                    "lineNumber": 66,
+                    "name": "sent",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "message",
+                            "type": "QString"
+                        }
+                    ],
+                    "index": 5,
+                    "lineNumber": 67,
+                    "name": "errorOccurred",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "measurementData",
+                            "type": "QVariantMap"
+                        }
+                    ],
+                    "index": 6,
+                    "lineNumber": 68,
+                    "name": "dataReceived",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "index": 7,
+                    "lineNumber": 70,
+                    "name": "mcuAckReceived",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "errCode",
+                            "type": "int"
+                        }
+                    ],
+                    "index": 8,
+                    "lineNumber": 72,
+                    "name": "mcuNakReceived",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "seq",
+                            "type": "int"
+                        }
+                    ],
+                    "index": 9,
+                    "lineNumber": 73,
+                    "name": "mcuNakSkipped",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "index": 10,
+                    "lineNumber": 74,
+                    "name": "allPacketsSent",
+                    "returnType": "void"
+                }
+            ],
+            "slots": [
+                {
+                    "access": "private",
+                    "index": 11,
+                    "lineNumber": 77,
+                    "name": "onReadyRead",
+                    "returnType": "void"
+                },
+                {
+                    "access": "private",
+                    "index": 12,
+                    "lineNumber": 78,
+                    "name": "sendNextQueuedPacket",
+                    "returnType": "void"
+                }
+            ],
+            "superClasses": [
+                {
+                    "access": "public",
+                    "name": "QObject"
+                }
+            ]
+        }
+    ],
+    "inputFile": "McuSender.h",
+    "outputRevision": 69
+}

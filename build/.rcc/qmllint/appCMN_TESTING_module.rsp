@@ -1,0 +1,12 @@
+-I
+D:/CMN/ProjectAppCap-abcde/build
+-I
+C:/Qt/6.10.1/mingw_64/qml
+--resource
+D:/CMN/ProjectAppCap-abcde/build/.qt/rcc/qmake_CMN_TESTING.qrc
+--resource
+D:/CMN/ProjectAppCap-abcde/build/.qt/rcc/appCMN_TESTING_raw_qml_0.qrc
+--resource
+D:/CMN/ProjectAppCap-abcde/build/.qt/rcc/appCMN_TESTING_raw_res_0.qrc
+--module
+CMN_TESTING

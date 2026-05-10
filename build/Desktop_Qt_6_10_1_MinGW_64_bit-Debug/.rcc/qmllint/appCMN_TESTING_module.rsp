@@ -1,0 +1,12 @@
+-I
+D:/code1/appppp-cmn1/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug
+-I
+C:/Qt/6.10.1/mingw_64/qml
+--resource
+D:/code1/appppp-cmn1/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/qmake_CMN_TESTING.qrc
+--resource
+D:/code1/appppp-cmn1/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/appCMN_TESTING_raw_qml_0.qrc
+--resource
+D:/code1/appppp-cmn1/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug/.qt/rcc/appCMN_TESTING_raw_res_0.qrc
+--module
+CMN_TESTING
