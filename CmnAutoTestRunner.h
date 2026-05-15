@@ -1,0 +1,167 @@
+#pragma once
+
+#include <QObject>
+#include <QVariantList>
+#include <QStringList>
+#include <QTimer>
+#include <QMap>
+#include <QVector>
+
+class MrSeriesController;
+class MdlSeriesController;
+class ControllerBox;
+class SignalMeasure;
+class McuSender;
+
+class CmnAutoTestRunner : public QObject
+{
+    Q_OBJECT
+
+    Q_PROPERTY(bool    running         READ isRunning        NOTIFY runningChanged)
+    Q_PROPERTY(bool    paused          READ isPaused         NOTIFY pausedChanged)
+    Q_PROPERTY(bool    waitingConfirm  READ isWaitingConfirm NOTIFY waitingConfirmChanged)
+    Q_PROPERTY(QString confirmMessage  READ confirmMessage   NOTIFY confirmMessageChanged)
+    Q_PROPERTY(int     currentStep     READ currentStep      NOTIFY currentStepChanged)
+    Q_PROPERTY(int     totalSteps      READ totalSteps       NOTIFY totalStepsChanged)
+    Q_PROPERTY(QString currentType     READ currentType      NOTIFY currentStepChanged)
+    Q_PROPERTY(QString currentDesc     READ currentDesc      NOTIFY currentStepChanged)
+    Q_PROPERTY(QVariantList stepResults READ stepResults     NOTIFY stepResultsChanged)
+    Q_PROPERTY(QStringList  sheetNames  READ sheetNames      NOTIFY sheetNamesChanged)
+    Q_PROPERTY(QString  loadedFile      READ loadedFile      NOTIFY sheetNamesChanged)
+    Q_PROPERTY(QString  defaultSaveDir  READ defaultSaveDir  NOTIFY defaultSaveDirChanged)
+    Q_PROPERTY(QString  lastSheetName   READ lastSheetName   NOTIFY sheetNamesChanged)
+    Q_PROPERTY(int     okCount         READ okCount          NOTIFY statsChanged)
+    Q_PROPERTY(int     ngCount         READ ngCount          NOTIFY statsChanged)
+    Q_PROPERTY(double  failRate        READ failRate         NOTIFY statsChanged)
+
+public:
+    explicit CmnAutoTestRunner(MrSeriesController  *mr,
+                               MdlSeriesController *mdl,
+                               ControllerBox       *box,
+                               SignalMeasure       *sig,
+                               McuSender           *mcu = nullptr,
+                               QObject *parent = nullptr);
+
+    bool    isRunning()        const { return m_running; }
+    bool    isPaused()         const { return m_paused; }
+    bool    isWaitingConfirm() const { return m_waitingConfirm; }
+    QString confirmMessage()   const { return m_confirmMessage; }
+    int     currentStep()      const { return m_currentStep; }
+    int     totalSteps()       const { return m_steps.size(); }
+    QString currentType()      const;
+    QString currentDesc()      const;
+    QVariantList stepResults() const { return m_stepResults; }
+    QStringList  sheetNames()  const { return m_sheetNames; }
+    QString  loadedFile()      const { return m_excelPath; }
+    QString  defaultSaveDir()  const { return m_defaultSaveDir; }
+    QString  lastSheetName()   const { return m_selectedSheet; }
+    int      okCount()         const { return m_okCount; }
+    int      ngCount()         const { return m_ngCount; }
+    double   failRate()        const;
+
+    Q_INVOKABLE bool loadExcel(const QString &filePath);
+    Q_INVOKABLE bool selectSheet(const QString &sheetName);
+    Q_INVOKABLE bool loadLastSession();
+    Q_INVOKABLE void setDefaultSaveDir(const QString &dir);
+    Q_INVOKABLE void runAll();
+    Q_INVOKABLE void pause();
+    Q_INVOKABLE void resume();
+    Q_INVOKABLE void stop();
+    Q_INVOKABLE void confirmStep();
+    Q_INVOKABLE bool saveResults(const QString &filePath = {});
+
+signals:
+    void runningChanged();
+    void pausedChanged();
+    void waitingConfirmChanged();
+    void confirmMessageChanged();
+    void currentStepChanged();
+    void totalStepsChanged();
+    void stepResultsChanged();
+    void sheetNamesChanged();
+    void statsChanged();
+    void stepStarted(int index, const QString &type, const QString &desc);
+    void stepCompleted(int index, double value, bool pass);
+    void stepNeedsConfirm(int index, const QString &message);
+    void allDone(int ok, int ng, double failRatePct);
+    void saveFinished(bool ok, const QString &path);
+    void defaultSaveDirChanged();
+    void logMessage(const QString &msg);
+
+private slots:
+    void executeNextStep();
+    void onRelayAck();
+    void onRelayNak(int errCode);
+
+private:
+    struct TestStep {
+        int     stt  = 0;
+        QString type, desc, p1, p2, p3, req;
+        double  resultValue = 0.0;
+        QString evaluation;
+        bool    hasResult = false;
+    };
+
+    struct Requirement {
+        enum Type { NONE, RANGE, MAX_ONLY, PERCENT_SETPOINT } type = NONE;
+        double min = 0.0, max = 1e18, tol = 0.0;
+    };
+
+    Requirement parseRequirement(const QString &req) const;
+    bool   checkValue(double value, const Requirement &r, double setpoint = 0.0) const;
+    double readSignalValue(const QString &name) const;
+    double readLoadVoltage(int ch) const;
+    double readLoadCurrent(int ch) const;
+    int    channelForLoad(const QString &loadName) const;
+    void   flushRelayBuffer();
+    void   flushLoadEnableBuffer();
+    void   executeTeardown(const QString &p1);
+    void   writeStepResult(int index, double value, bool pass);
+    void   advanceStep();
+    void   scheduleNext(int delayMs = 80);
+    void   resetRunState();
+    QVariantMap stepToMap(int index) const;
+
+    MrSeriesController  *m_mr;
+    MdlSeriesController *m_mdl;
+    ControllerBox       *m_box;
+    SignalMeasure       *m_sig;
+    McuSender           *m_mcu;
+
+    QString           m_excelPath;
+    QString           m_selectedSheet;
+    QString           m_defaultSaveDir;
+    QStringList       m_sheetNames;
+    QVector<TestStep> m_steps;
+
+    int     m_currentStep    = 0;
+    bool    m_running        = false;
+    bool    m_paused         = false;
+    bool    m_waitingConfirm = false;
+    bool    m_waitingRelay   = false;
+    QString m_confirmMessage;
+
+    // Relay flush queue
+    struct RelayCmd { int pin; bool state; QString name; };
+    QVector<RelayCmd> m_relayQueue;
+    int               m_relayQueueIdx = 0;
+
+    QVariantList m_stepResults;
+    int    m_okCount = 0;
+    int    m_ngCount = 0;
+
+    QTimer *m_stepTimer;
+
+    // Relay buffer: updated by SET_RELAY, flushed by ACTION "SET RELAY"
+    QMap<QString, bool> m_relayBuffer;
+    QStringList         m_mentionedRelays;
+
+    // Load buffers
+    QMap<QString, bool>   m_loadEnableBuffer;
+    QMap<QString, double> m_loadCurrentBuffer;
+
+    // Result cache for SAISO lookups: {loadName -> {valueType -> measuredValue}}
+    QMap<QString, QMap<QString, double>> m_resultCache;
+
+    static const QStringList kAllRelayNames;
+};

@@ -14,7 +14,12 @@
       "Bash(git init *)",
       "Bash(git add *)",
       "Bash(git rm *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(/c/Qt/6.10.1/mingw_64/bin/windeployqt.exe --qmldir \"/d/APP_CMN/APP_CMN\" appCMN_TESTING.exe)",
+      "PowerShell(& \"C:\\\\Qt\\\\Tools\\\\CMake_64\\\\bin\\\\cmake.exe\" --build \"D:/APP_CMN/APP_CMN/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug\" --target appCMN_TESTING 2>&1 | Select-Object -Last 15)",
+      "PowerShell(& \"C:\\\\Qt\\\\Tools\\\\CMake_64\\\\bin\\\\cmake.exe\" --build \"D:/APP_CMN/APP_CMN/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug\" --target appCMN_TESTING 2>&1 | Select-Object -Last 10)",
+      "PowerShell(& \"C:\\\\Qt\\\\Tools\\\\CMake_64\\\\bin\\\\cmake.exe\" --build \"D:/APP_CMN/APP_CMN/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug\" --target appCMN_TESTING 2>&1 | Select-Object -Last 8)",
+      "PowerShell(& \"C:\\\\Qt\\\\Tools\\\\CMake_64\\\\bin\\\\cmake.exe\" --build \"D:/APP_CMN/APP_CMN/build/Desktop_Qt_6_10_1_MinGW_64_bit-Debug\" --target appCMN_TESTING 2>&1 | Select-Object -Last 12)"
     ]
   }
 }

@@ -1,0 +1,709 @@
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Dialogs
+
+ApplicationWindow {
+    id: win
+    title: "CMN AUTO TEST RUNNER"
+    width:  1200
+    height: 820
+    visible: false
+
+    function openWindow() { show(); raise(); requestActivate() }
+
+    // ── Color palette (same as Main.qml) ─────────────────────────────────────
+    readonly property color cBg:      "#0c1014"
+    readonly property color cPanel:   "#121c22"
+    readonly property color cHdr:     "#0a1318"
+    readonly property color cRow0:    "#111a20"
+    readonly property color cRow1:    "#162028"
+    readonly property color cBorder:  "#2a4050"
+    readonly property color cText:    "#b8ccc0"
+    readonly property color cDim:     "#526860"
+    readonly property color cAccent:  "#3a8060"
+    readonly property color cGreen:   "#2eb870"
+    readonly property color cRed:     "#c03838"
+    readonly property color cYellow:  "#c09030"
+    readonly property color cCyan:    "#38a8a0"
+    readonly property color cPurple:  "#7898a8"
+    readonly property color cInput:   "#080e12"
+
+    background: Rectangle { color: cBg }
+
+    // ── Reusable button component ─────────────────────────────────────────────
+    component CBtn: Rectangle {
+        id: cb
+        property string lbl: ""; property color bc: cAccent
+        property bool   ena: true; property int  fs: 11
+        signal tapped()
+        radius: 4
+        color: !ena ? "#0a100a" : ma.pressed ? Qt.darker(bc,1.6) : ma.containsMouse ? Qt.lighter(bc,1.2) : Qt.darker(bc,1.1)
+        border.color: ena ? bc : "#1a2a1a"
+        Text { anchors.centerIn: parent; text: cb.lbl
+               color: ena ? (ma.containsMouse ? "white" : cText) : cDim
+               font.pixelSize: cb.fs; font.bold: true; font.family: "Consolas" }
+        MouseArea { id: ma; anchors.fill: parent; hoverEnabled: true
+                    enabled: cb.ena; onClicked: cb.tapped() }
+    }
+
+    // ── Step type → color ─────────────────────────────────────────────────────
+    function stepColor(type) {
+        switch((type || "").toUpperCase()) {
+        case "ACTION":     return cYellow
+        case "SET_SOURCE": return cPurple
+        case "SET_RELAY":  return cCyan
+        case "SET_LOAD":   return "#64b5f6"
+        case "ENABLE_LOAD":return "#80cbc4"
+        case "VERIFY":     return cGreen
+        case "RESULT_V":
+        case "RESULT_I":   return "#a5d6a7"
+        case "SAISO_V":
+        case "SAISO_I":    return cYellow
+        case "TEARDOWN":   return cRed
+        default:           return cDim
+        }
+    }
+
+    // ── Folder dialog (chọn thư mục lưu) ─────────────────────────────────────
+    FolderDialog {
+        id: folderDialog
+        title: "Chọn thư mục lưu kết quả"
+        onAccepted: {
+            var path = selectedFolder.toString()
+            path = path.replace(/^(file:\/{3})/,"")
+            path = decodeURIComponent(path)
+            cmnAutoRunner.setDefaultSaveDir(path)
+            saveDirField.text = path
+        }
+    }
+
+    // ── File dialogs ──────────────────────────────────────────────────────────
+    FileDialog {
+        id: fileDialog
+        title: "Chọn file Excel kịch bản test"
+        nameFilters: ["Excel files (*.xlsx *.xls)", "All files (*)"]
+        fileMode: FileDialog.OpenFile
+        onAccepted: {
+            var path = selectedFile.toString()
+            path = path.replace(/^(file:\/{3})/,"")
+            path = decodeURIComponent(path)
+            cmnAutoRunner.loadExcel(path)
+        }
+    }
+
+    FileDialog {
+        id: saveAsDialog
+        title: "Lưu kết quả thành file mới"
+        nameFilters: ["Excel files (*.xlsx)"]
+        fileMode: FileDialog.SaveFile
+        defaultSuffix: "xlsx"
+        onAccepted: {
+            var path = selectedFile.toString()
+            path = path.replace(/^(file:\/{3})/,"")
+            path = decodeURIComponent(path)
+            cmnAutoRunner.saveResults(path)
+        }
+    }
+
+    // ── Save notification toast ───────────────────────────────────────────────
+    Rectangle {
+        id: saveToast
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top; anchors.topMargin: 16
+        width: toastText.implicitWidth + 40; height: 38; radius: 8
+        z: 200; opacity: 0; visible: opacity > 0
+        color: saveToast._isOk ? "#0d2e18" : "#2e0d0d"
+        border.color: saveToast._isOk ? cGreen : cRed; border.width: 1
+
+        property bool _isOk: true
+        property string _msg: ""
+
+        Behavior on opacity { NumberAnimation { duration: 200 } }
+
+        Text {
+            id: toastText
+            anchors.centerIn: parent
+            text: saveToast._msg
+            color: saveToast._isOk ? cGreen : cRed
+            font.pixelSize: 12; font.family: "Consolas"; font.bold: true
+        }
+
+        Timer {
+            id: toastTimer; interval: 3000; repeat: false
+            onTriggered: saveToast.opacity = 0
+        }
+
+        Connections {
+            target: cmnAutoRunner
+            function onSaveFinished(ok, path) {
+                saveToast._isOk = ok
+                saveToast._msg  = ok
+                    ? ("✓ Đã lưu: " + path.replace(/\\/g,"/").split("/").pop())
+                    : "✗ Lưu thất bại"
+                saveToast.opacity = 1
+                toastTimer.restart()
+            }
+        }
+    }
+
+    // ── Root layout ───────────────────────────────────────────────────────────
+    ColumnLayout {
+        anchors.fill: parent
+        spacing: 0
+
+        // ══ TOOLBAR ══════════════════════════════════════════════════════════
+        Rectangle {
+            Layout.fillWidth: true; height: 54; color: cHdr
+            border.color: cBorder
+            RowLayout {
+                anchors.fill: parent; anchors.leftMargin: 14; anchors.rightMargin: 14; spacing: 10
+
+                // Title
+                Column {
+                    spacing: 2
+                    Text { text: "CMN AUTO TEST"; color: cCyan
+                           font.pixelSize: 16; font.bold: true; font.letterSpacing: 2; font.family: "Consolas" }
+                    Text {
+                        text: {
+                            if (!cmnAutoRunner.loadedFile) return "Chưa load file"
+                            var f = cmnAutoRunner.loadedFile.replace(/\\/g, "/")
+                            return f.substring(f.lastIndexOf("/") + 1)
+                        }
+                        color: cDim; font.pixelSize: 9; font.family: "Consolas"
+                    }
+                }
+
+                Rectangle { width: 1; height: 38; color: cBorder }
+
+                // Import Excel
+                CBtn {
+                    lbl: "📂  IMPORT EXCEL"; bc: "#1565c0"
+                    width: 130; height: 34; fs: 11
+                    ena: !cmnAutoRunner.running
+                    onTapped: fileDialog.open()
+                }
+
+                // Sheet selector
+                Text { text: "Sheet:"; color: cDim; font.pixelSize: 11 }
+                ComboBox {
+                    id: sheetCombo
+                    model: cmnAutoRunner.sheetNames
+                    Layout.preferredWidth: 160; height: 32
+                    enabled: !cmnAutoRunner.running && cmnAutoRunner.sheetNames.length > 0
+                    font.pixelSize: 11; font.family: "Consolas"
+                    background: Rectangle { color: cInput; border.color: cBorder; radius: 3 }
+                    contentItem: Text { text: sheetCombo.displayText; color: cText
+                                        font.pixelSize: 11; leftPadding: 8
+                                        verticalAlignment: Text.AlignVCenter }
+                    onCurrentTextChanged: {
+                        if (currentText && !cmnAutoRunner.running)
+                            cmnAutoRunner.selectSheet(currentText)
+                    }
+                }
+
+                Rectangle { width: 1; height: 38; color: cBorder }
+
+                // Run controls
+                CBtn {
+                    lbl: "▶  CHẠY TẤT CẢ"; bc: cGreen; width: 120; height: 34; fs: 12
+                    ena: !cmnAutoRunner.running && cmnAutoRunner.totalSteps > 0
+                    onTapped: cmnAutoRunner.runAll()
+                }
+                CBtn {
+                    lbl: cmnAutoRunner.paused ? "▶  TIẾP TỤC" : "⏸  TẠM DỪNG"
+                    bc: cmnAutoRunner.paused ? cGreen : cYellow; width: 110; height: 34; fs: 11
+                    ena: cmnAutoRunner.running
+                    onTapped: cmnAutoRunner.paused ? cmnAutoRunner.resume() : cmnAutoRunner.pause()
+                }
+                CBtn {
+                    lbl: "■  DỪNG"; bc: cRed; width: 80; height: 34; fs: 11
+                    ena: cmnAutoRunner.running
+                    onTapped: cmnAutoRunner.stop()
+                }
+
+                Rectangle { width: 1; height: 38; color: cBorder }
+
+                // Save results
+                CBtn {
+                    lbl: "💾  LƯU KQ"; bc: cAccent; width: 100; height: 34; fs: 11
+                    ena: !cmnAutoRunner.running && cmnAutoRunner.okCount + cmnAutoRunner.ngCount > 0
+                    onTapped: cmnAutoRunner.saveResults()
+                }
+                CBtn {
+                    lbl: "📄  LƯU AS"; bc: "#37474f"; width: 90; height: 34; fs: 10
+                    ena: !cmnAutoRunner.running && cmnAutoRunner.okCount + cmnAutoRunner.ngCount > 0
+                    onTapped: saveAsDialog.open()
+                }
+
+                Rectangle { width: 1; height: 38; color: cBorder }
+
+                // Stats
+                Repeater {
+                    model: [
+                        {l:"TỔNG",  v: cmnAutoRunner.totalSteps.toString(),      c: cCyan},
+                        {l:"ĐẠT",   v: cmnAutoRunner.okCount.toString(),         c: cGreen},
+                        {l:"KĐ",    v: cmnAutoRunner.ngCount.toString(),         c: cRed},
+                        {l:"FAIL%", v: cmnAutoRunner.failRate.toFixed(1) + "%",  c: cYellow}
+                    ]
+                    delegate: Column {
+                        spacing: 1
+                        Text { text: modelData.l; color: cDim; font.pixelSize: 9
+                               anchors.horizontalCenter: parent.horizontalCenter }
+                        Text { text: modelData.v; color: modelData.c
+                               font.pixelSize: 15; font.bold: true; font.family: "Consolas" }
+                    }
+                }
+
+                Item { Layout.fillWidth: true }
+
+                // Status indicator
+                Rectangle {
+                    width: 110; height: 30; radius: 4
+                    color: cmnAutoRunner.running ? (cmnAutoRunner.paused ? "#1a1a00" : "#001a08")
+                                                 : "#0a0a0a"
+                    border.color: cmnAutoRunner.running ? (cmnAutoRunner.paused ? cYellow : cGreen) : cBorder
+                    Row {
+                        anchors.centerIn: parent; spacing: 6
+                        Rectangle {
+                            width: 8; height: 8; radius: 4
+                            color: cmnAutoRunner.running ? (cmnAutoRunner.paused ? cYellow : cGreen) : cDim
+                            anchors.verticalCenter: parent.verticalCenter
+                            SequentialAnimation on opacity {
+                                running: cmnAutoRunner.running && !cmnAutoRunner.paused
+                                loops: Animation.Infinite
+                                NumberAnimation { to: 0.2; duration: 500 }
+                                NumberAnimation { to: 1.0; duration: 500 }
+                            }
+                        }
+                        Text {
+                            text: cmnAutoRunner.running ? (cmnAutoRunner.paused ? "PAUSED" : "RUNNING") : "IDLE"
+                            color: cmnAutoRunner.running ? (cmnAutoRunner.paused ? cYellow : cGreen) : cDim
+                            font.pixelSize: 11; font.bold: true; font.family: "Consolas"
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                    }
+                }
+            }
+        }
+        Rectangle { Layout.fillWidth: true; height: 2; color: cAccent; opacity: 0.6 }
+
+        // ══ SAVE LOCATION STRIP ═══════════════════════════════════════════════
+        Rectangle {
+            Layout.fillWidth: true; height: 34; color: "#0d1820"
+            border.color: cBorder
+            RowLayout {
+                anchors.fill: parent; anchors.leftMargin: 14; anchors.rightMargin: 14; spacing: 8
+                Text { text: "Thư mục lưu KQ:"; color: cDim; font.pixelSize: 11; font.family: "Consolas" }
+                Rectangle {
+                    Layout.fillWidth: true; height: 24; radius: 3
+                    color: cInput; border.color: cBorder
+                    TextInput {
+                        id: saveDirField
+                        anchors.fill: parent; anchors.margins: 5
+                        text: cmnAutoRunner.defaultSaveDir
+                        color: cText; font.pixelSize: 11; font.family: "Consolas"
+                        clip: true
+                        onEditingFinished: cmnAutoRunner.setDefaultSaveDir(text.trim())
+                    }
+                }
+                CBtn {
+                    lbl: "📁"; bc: "#37474f"; width: 30; height: 24; fs: 12
+                    onTapped: folderDialog.open()
+                }
+                Text {
+                    text: cmnAutoRunner.defaultSaveDir
+                           ? "→ " + cmnAutoRunner.loadedFile.replace(/\\/g,"/").split("/").pop().replace(".xlsx","") + "_result.xlsx"
+                           : "→ Ghi đè file gốc"
+                    color: cmnAutoRunner.defaultSaveDir ? cGreen : cYellow
+                    font.pixelSize: 10; font.family: "Consolas"
+                    elide: Text.ElideRight; Layout.preferredWidth: 260
+                }
+            }
+        }
+        Rectangle { Layout.fillWidth: true; height: 1; color: cBorder }
+
+        // ══ COM PORT STRIP ════════════════════════════════════════════════════
+        Rectangle {
+            Layout.fillWidth: true; height: 34; color: "#0a1218"
+            border.color: cBorder
+
+            RowLayout {
+                anchors.fill: parent; anchors.leftMargin: 14; anchors.rightMargin: 14; spacing: 8
+
+                Text { text: "Cổng COM (MCU relay):"; color: cDim; font.pixelSize: 11; font.family: "Consolas" }
+
+                ComboBox {
+                    id: mcuPortCombo
+                    Layout.preferredWidth: 110; height: 24
+                    font.pixelSize: 11; font.family: "Consolas"
+                    background: Rectangle { color: cInput; border.color: cBorder; radius: 3 }
+                    contentItem: Text {
+                        text: mcuPortCombo.displayText; color: cText
+                        font.pixelSize: 11; leftPadding: 8
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                    Component.onCompleted: {
+                        var ports = mcuSender.getAvailablePorts()
+                        model = ports
+                        var idx = ports.indexOf(mcuSender.portName)
+                        if (idx >= 0) currentIndex = idx
+                        else if (ports.length > 0) currentIndex = 0
+                    }
+                }
+
+                // Refresh button
+                CBtn {
+                    lbl: "↻"; bc: "#37474f"; width: 26; height: 24; fs: 13
+                    onTapped: {
+                        var cur = mcuPortCombo.currentText
+                        var ports = mcuSender.getAvailablePorts()
+                        mcuPortCombo.model = ports
+                        var idx = ports.indexOf(cur)
+                        mcuPortCombo.currentIndex = idx >= 0 ? idx : (ports.length > 0 ? 0 : -1)
+                    }
+                }
+
+                // Open / Close button
+                CBtn {
+                    id: mcuConnBtn
+                    lbl: mcuSender.isOpen ? "ĐÓNG" : "KẾT NỐI"
+                    bc:  mcuSender.isOpen ? cRed : cAccent
+                    width: 80; height: 24; fs: 10
+                    onTapped: {
+                        if (mcuSender.isOpen) {
+                            mcuSender.closePort()
+                        } else {
+                            if (mcuPortCombo.currentText)
+                                mcuSender.portName = mcuPortCombo.currentText
+                            mcuSender.openPort()
+                        }
+                    }
+                }
+
+                // Status badge
+                Rectangle {
+                    width: 80; height: 22; radius: 4
+                    color: mcuSender.isOpen ? "#0a2010" : "#0a0a0a"
+                    border.color: mcuSender.isOpen ? cGreen : cBorder
+                    Text {
+                        anchors.centerIn: parent
+                        text: mcuSender.isOpen ? ("● " + mcuSender.portName) : "● OFFLINE"
+                        color: mcuSender.isOpen ? cGreen : cDim
+                        font.pixelSize: 10; font.bold: true; font.family: "Consolas"
+                    }
+                }
+
+                // Baud rate selector
+                Text { text: "Baud:"; color: cDim; font.pixelSize: 11; font.family: "Consolas" }
+                ComboBox {
+                    id: mcuBaudCombo
+                    Layout.preferredWidth: 90; height: 24
+                    model: ["9600","19200","38400","57600","115200"]
+                    currentIndex: 4          // default 115200
+                    font.pixelSize: 11; font.family: "Consolas"
+                    background: Rectangle { color: cInput; border.color: cBorder; radius: 3 }
+                    contentItem: Text {
+                        text: mcuBaudCombo.displayText; color: cText
+                        font.pixelSize: 11; leftPadding: 8
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                    onCurrentTextChanged: mcuSender.baudRate = parseInt(currentText)
+                }
+
+                Item { Layout.fillWidth: true }
+            }
+        }
+        Rectangle { Layout.fillWidth: true; height: 1; color: cBorder }
+
+        // ══ PROGRESS + CURRENT STEP ══════════════════════════════════════════
+        Rectangle {
+            Layout.fillWidth: true; height: 86; color: cPanel
+            border.color: cBorder
+
+            ColumnLayout {
+                anchors.fill: parent; anchors.margins: 12; spacing: 8
+
+                // Progress bar row
+                RowLayout {
+                    Layout.fillWidth: true; spacing: 10
+                    Text {
+                        text: cmnAutoRunner.totalSteps > 0
+                              ? (cmnAutoRunner.currentStep + 1) + " / " + cmnAutoRunner.totalSteps
+                              : "0 / 0"
+                        color: cCyan; font.pixelSize: 13; font.bold: true; font.family: "Consolas"
+                        Layout.preferredWidth: 80
+                    }
+                    Rectangle {
+                        Layout.fillWidth: true; height: 18; radius: 4; color: cRow0; border.color: cBorder
+                        Rectangle {
+                            height: parent.height; radius: 4
+                            width: cmnAutoRunner.totalSteps > 0
+                                   ? parent.width * Math.min(cmnAutoRunner.currentStep, cmnAutoRunner.totalSteps) / cmnAutoRunner.totalSteps
+                                   : 0
+                            color: cAccent
+                            Behavior on width { NumberAnimation { duration: 200 } }
+                        }
+                    }
+                    Text {
+                        text: cmnAutoRunner.totalSteps > 0
+                              ? (cmnAutoRunner.currentStep * 100 / cmnAutoRunner.totalSteps).toFixed(0) + "%"
+                              : "0%"
+                        color: cDim; font.pixelSize: 11; font.family: "Consolas"
+                        Layout.preferredWidth: 40; horizontalAlignment: Text.AlignRight
+                    }
+                }
+
+                // Current step info
+                Rectangle {
+                    Layout.fillWidth: true; height: 32; radius: 4
+                    color: Qt.darker(stepColor(cmnAutoRunner.currentType), 3.0)
+                    border.color: stepColor(cmnAutoRunner.currentType)
+                    RowLayout {
+                        anchors.fill: parent; anchors.leftMargin: 12; anchors.rightMargin: 12
+                        Rectangle {
+                            width: 80; height: 20; radius: 3
+                            color: stepColor(cmnAutoRunner.currentType)
+                            Text { anchors.centerIn: parent; text: cmnAutoRunner.currentType || "—"
+                                   color: "white"; font.pixelSize: 10; font.bold: true; font.family: "Consolas" }
+                        }
+                        Text {
+                            Layout.fillWidth: true; Layout.leftMargin: 10
+                            text: cmnAutoRunner.currentDesc || "Chưa bắt đầu"
+                            color: cText; font.pixelSize: 12; font.family: "Consolas"
+                            elide: Text.ElideRight
+                        }
+                    }
+                }
+            }
+        }
+        Rectangle { Layout.fillWidth: true; height: 1; color: cBorder }
+
+        // ══ RESULTS TABLE ════════════════════════════════════════════════════
+        ColumnLayout {
+            Layout.fillWidth: true; Layout.fillHeight: true
+            spacing: 0
+
+            // Table header
+            Rectangle {
+                Layout.fillWidth: true; height: 28; color: cHdr
+                RowLayout {
+                    anchors.fill: parent; anchors.leftMargin: 10; anchors.rightMargin: 10; spacing: 0
+                    Repeater {
+                        model: [
+                            {t:"STT",       w:50},
+                            {t:"LOẠI BƯỚC", w:100},
+                            {t:"MÔ TẢ",     w:-1},
+                            {t:"YÊU CẦU",   w:150},
+                            {t:"KẾT QUẢ",   w:154}
+                        ]
+                        delegate: Text {
+                            text: modelData.t
+                            Layout.preferredWidth: modelData.w > 0 ? modelData.w : undefined
+                            Layout.fillWidth: modelData.w < 0
+                            height: 28; verticalAlignment: Text.AlignVCenter
+                            color: cCyan; font.pixelSize: 11; font.bold: true; font.family: "Consolas"
+                        }
+                    }
+                }
+            }
+
+            // Rows
+            ListView {
+                id: resultList
+                Layout.fillWidth: true; Layout.fillHeight: true; clip: true
+
+                model: cmnAutoRunner.stepResults
+
+                // Auto-scroll to current step while running
+                Connections {
+                    target: cmnAutoRunner
+                    function onCurrentStepChanged() {
+                        if (cmnAutoRunner.running)
+                            resultList.positionViewAtIndex(cmnAutoRunner.currentStep, ListView.Center)
+                    }
+                }
+
+                delegate: Rectangle {
+                    width: resultList.width; height: 28
+                    property bool isCurrent: index === cmnAutoRunner.currentStep && cmnAutoRunner.running
+                    color: isCurrent ? Qt.rgba(0.15, 0.35, 0.2, 1) : (index % 2 === 0 ? cRow0 : cRow1)
+                    border.color: isCurrent ? cAccent : "transparent"
+                    border.width: 1
+
+                    RowLayout {
+                        anchors.fill: parent; anchors.leftMargin: 10; anchors.rightMargin: 10; spacing: 0
+
+                        Text { text: modelData.stt; Layout.preferredWidth: 50
+                               color: cDim; font.pixelSize: 11; font.family: "Consolas" }
+
+                        Rectangle {
+                            Layout.preferredWidth: 96; height: 18; radius: 3
+                            color: Qt.darker(stepColor(modelData.type), 2.5)
+                            border.color: stepColor(modelData.type)
+                            Text { anchors.centerIn: parent; text: modelData.type
+                                   color: stepColor(modelData.type)
+                                   font.pixelSize: 9; font.bold: true; font.family: "Consolas" }
+                        }
+                        Item { Layout.preferredWidth: 4 }
+
+                        Text { text: modelData.desc; Layout.fillWidth: true
+                               color: cText; font.pixelSize: 11; font.family: "Consolas"
+                               elide: Text.ElideRight }
+
+                        Text { text: modelData.req; Layout.preferredWidth: 150
+                               color: "#e8c060"; font.pixelSize: 10; font.family: "Consolas"
+                               elide: Text.ElideRight }
+
+                        Rectangle {
+                            Layout.preferredWidth: 154; height: 20; radius: 3
+                            color: !modelData.hasResult ? "transparent"
+                                 : modelData.pass ? "#0a2010" : "#2a0808"
+                            border.color: !modelData.hasResult ? "transparent"
+                                        : modelData.pass ? cGreen : cRed
+                            Text {
+                                anchors.centerIn: parent; width: parent.width - 8
+                                text: !modelData.hasResult ? ""
+                                    : modelData.value
+                                      ? (modelData.value + "  " + modelData.evaluation)
+                                      : modelData.evaluation
+                                color: modelData.pass ? cGreen : cRed
+                                font.pixelSize: 10; font.bold: true; font.family: "Consolas"
+                                horizontalAlignment: Text.AlignHCenter
+                                elide: Text.ElideRight
+                            }
+                        }
+                    }
+                }
+
+                ScrollBar.vertical: ScrollBar { policy: ScrollBar.AlwaysOn }
+            }
+        }
+    }
+
+    // ══ CONFIRM DIALOG ════════════════════════════════════════════════════════
+    Rectangle {
+        id: confirmBackdrop
+        anchors.fill: parent
+        z: 100
+        visible: cmnAutoRunner.waitingConfirm
+        color: "#b0000000"
+
+        Behavior on opacity { NumberAnimation { duration: 150 } }
+
+        Rectangle {
+            anchors.centerIn: parent
+            width: 520; height: confirmCol.implicitHeight + 60
+            color: "#1c2e3e"; radius: 12
+            border.color: cYellow; border.width: 2
+
+            // Top accent bar
+            Rectangle {
+                anchors.top: parent.top; anchors.left: parent.left; anchors.right: parent.right
+                height: 3; radius: 12; color: cYellow
+            }
+
+            ColumnLayout {
+                id: confirmCol
+                anchors.top: parent.top; anchors.left: parent.left; anchors.right: parent.right
+                anchors.margins: 30; anchors.topMargin: 36; spacing: 16
+
+                // Icon + title
+                Row {
+                    spacing: 12; Layout.alignment: Qt.AlignHCenter
+                    Text { text: "⚠"; color: cYellow; font.pixelSize: 24
+                           anchors.verticalCenter: parent.verticalCenter }
+                    Text { text: "YÊU CẦU XÁC NHẬN"
+                           color: cYellow; font.pixelSize: 16; font.bold: true
+                           font.letterSpacing: 2; font.family: "Consolas"
+                           anchors.verticalCenter: parent.verticalCenter }
+                }
+
+                // Message
+                Rectangle {
+                    Layout.fillWidth: true; height: messageText.implicitHeight + 24
+                    color: "#101820"; radius: 6; border.color: cBorder
+                    Text {
+                        id: messageText
+                        anchors { fill: parent; margins: 12 }
+                        text: cmnAutoRunner.confirmMessage
+                        color: cText; font.pixelSize: 13; font.family: "Consolas"
+                        wrapMode: Text.WordWrap
+                    }
+                }
+
+                // Step info
+                Text {
+                    text: "Bước " + (cmnAutoRunner.currentStep + 1) + " / " + cmnAutoRunner.totalSteps
+                    color: cDim; font.pixelSize: 11; font.family: "Consolas"
+                    Layout.alignment: Qt.AlignHCenter
+                }
+
+                // Confirm button
+                Rectangle {
+                    Layout.fillWidth: true; height: 46; radius: 6
+                    color: confirmMa.pressed ? Qt.darker(cGreen, 1.5)
+                         : confirmMa.containsMouse ? Qt.lighter(cGreen, 1.1) : Qt.darker(cGreen, 1.2)
+                    border.color: cGreen; border.width: 2
+                    Text { anchors.centerIn: parent; text: "✓  XÁC NHẬN — ĐÃ THỰC HIỆN XONG"
+                           color: "white"; font.pixelSize: 13; font.bold: true
+                           font.letterSpacing: 1; font.family: "Consolas" }
+                    MouseArea {
+                        id: confirmMa; anchors.fill: parent; hoverEnabled: true
+                        onClicked: cmnAutoRunner.confirmStep()
+                    }
+                }
+
+                Item { height: 4 }
+            }
+        }
+    }
+
+    // ══ ALL-DONE BANNER ═══════════════════════════════════════════════════════
+    Rectangle {
+        id: doneBanner
+        anchors.bottom: parent.bottom; anchors.left: parent.left; anchors.right: parent.right
+        height: 56; z: 50
+        visible: opacity > 0; opacity: 0
+
+        Behavior on opacity { NumberAnimation { duration: 300 } }
+
+        gradient: Gradient {
+            orientation: Gradient.Horizontal
+            GradientStop { position: 0.0; color: cmnAutoRunner.ngCount > 0 ? "#3a0808" : "#083018" }
+            GradientStop { position: 1.0; color: cmnAutoRunner.ngCount > 0 ? "#200808" : "#061808" }
+        }
+        border.color: cmnAutoRunner.ngCount > 0 ? cRed : cGreen
+
+        RowLayout {
+            anchors.fill: parent; anchors.margins: 16; spacing: 20
+            Text {
+                text: cmnAutoRunner.ngCount > 0 ? "✗  HOÀN THÀNH — CÓ LỖI" : "✓  HOÀN THÀNH — ĐẠT TOÀN BỘ"
+                color: cmnAutoRunner.ngCount > 0 ? cRed : cGreen
+                font.pixelSize: 16; font.bold: true; font.family: "Consolas"
+            }
+            Text {
+                text: "ĐẠT: " + cmnAutoRunner.okCount
+                color: cGreen; font.pixelSize: 14; font.bold: true; font.family: "Consolas"
+            }
+            Text {
+                text: "KHÔNG ĐẠT: " + cmnAutoRunner.ngCount
+                color: cmnAutoRunner.ngCount > 0 ? cRed : cDim
+                font.pixelSize: 14; font.bold: true; font.family: "Consolas"
+            }
+            Text {
+                text: "Fail rate: " + cmnAutoRunner.failRate.toFixed(1) + "%"
+                color: cYellow; font.pixelSize: 13; font.family: "Consolas"
+            }
+            Item { Layout.fillWidth: true }
+            CBtn { lbl: "✕  Đóng"; bc: "#546e7a"; width: 80; height: 30; fs: 10
+                onTapped: doneBanner.opacity = 0 }
+        }
+
+        Connections {
+            target: cmnAutoRunner
+            function onAllDone() { doneBanner.opacity = 1 }
+            function onRunningChanged() { if (cmnAutoRunner.running) doneBanner.opacity = 0 }
+        }
+    }
+}

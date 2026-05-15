@@ -156,7 +156,7 @@ Item {
                 _lastExcelPath = filePath
                 openExcelDialog.open()
             } else {
-                exportMessageLabel.text = qsTr("✕ Lỗi xuất Excel!")
+                exportMessageLabelz.text = qsTr("✕ Lỗi xuất Excel!")
                 exportMessageLabel.color = "#D32F2F"
             }
             exportMessageTimer.restart()
@@ -475,6 +475,13 @@ Item {
 
                 // Sử dụng adjustedValue thay vì parse từ chuỗi formattedValue
                 var numValForComparison = adjustedValue
+
+                if (rawValue < 0) {
+                    mainTestListModel.setProperty(i, "resultStatus", "NAK")
+                    mainTestListModel.setProperty(i, "measuredValue", "NAK")
+                    logMessage(displayText + " → MCU NAK (hết retry, bỏ qua)", true)
+                    break
+                }
 
                 if (!isNaN(numValForComparison)) {
                     var isPass = false
@@ -1501,6 +1508,7 @@ Item {
                                  : isSaveResult ? (window.darkMode ? "#14532D" : "#E8F5E9")
                                  : resStatus === "PASS" ? (window.darkMode ? "rgba(16, 185, 129, 0.15)" : "#C8E6C9")
                                  : resStatus === "FAIL" ? (window.darkMode ? "rgba(239, 68, 68, 0.2)" : "#FFCDD2")
+                                 : resStatus === "NAK"  ? (window.darkMode ? "rgba(251, 146, 60, 0.25)" : "#FFE0B2")
                                  : (index % 2 === 0 ? (window.darkMode ? "#1E293B" : "#ffffff") : (window.darkMode ? "#0F172A" : "#f8f8f8"))
                             opacity: isMeasurable ? ((model.allowRun !== false) ? 1.0 : 0.4) : 1.0
 

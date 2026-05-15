@@ -722,12 +722,14 @@ ApplicationWindow {
         property bool allMeasurementsDone: false     // Đã đo hết
         property bool isPaused: false                // Đã bấm Stop (tạm dừng)
         property string pausedDuringPhase: ""      // "sending" hoặc "measuring"
+        property int pausedMeasurementIndex: 0     // Index bài đo tại thời điểm dừng
         property bool mcuReady: false                // MCU gửi 0x06 sẵn sàng
         property int currentMeasurementIndex: 0      // Index script đang đo
         property int totalMeasurements: 0            // Tổng số script cần đo
         property double _measureStartTime: 0         // Timestamp (ms) khi bắt đầu đo 1 script
         property string statusMessage: ""
         property var validScriptsForPair: []         // Cache scripts hợp lệ
+        property var mcuFrameLog: []                 // Log bản tin nhận từ MCU
 
         // === Đọc nhiều lần (numReadings) ===
         property int currentReadingIndex: 0          // Lần đọc hiện tại (0-based)
@@ -767,6 +769,7 @@ ApplicationWindow {
             isPaused = false
             mcuReady = false
             currentMeasurementIndex = 0
+            pausedMeasurementIndex = 0
             totalMeasurements = 0
             statusMessage = ""
             validScriptsForPair = []
@@ -845,15 +848,47 @@ ApplicationWindow {
                 }
             }
 
+            function onMcuFrameReceived(hex, desc) {
+                var isNak = desc.indexOf("NAK") >= 0
+                var msg = "[MCU] " + hex + "  |  " + desc
+                if (mainContent) mainContent.logMessage(msg, isNak)
+                console.log("[MCU FRAME]", new Date().toLocaleTimeString(), hex, "|", desc)
+            }
+
+            function onMcuNakReceived(errCode) {
+                if (!notificationDialog.visible || !notificationDialog.isMeasuring) return
+                var errStr
+                switch (errCode) {
+                case 0x01: errStr = "CRC sai";       break
+                case 0x02: errStr = "Timeout";        break
+                case 0x03: errStr = "Hết retry";      break
+                case 0x04: errStr = "MCU đang bận";   break
+                default:   errStr = "0x" + errCode.toString(16).toUpperCase().padStart(2, '0')
+                }
+                var idx = notificationDialog.currentMeasurementIndex
+                var scriptName = idx < notificationDialog.validScriptsForPair.length
+                    ? String(notificationDialog.validScriptsForPair[idx].displayText || "")
+                    : ""
+                console.warn("[MCU] NAK script", idx + 1, "/", notificationDialog.totalMeasurements,
+                             "- lỗi:", errStr, "(0x" + errCode.toString(16) + ")")
+                notificationDialog.statusMessage = qsTr("⚠ NAK [%1/%2] %3: %4 — đang retry...")
+                    .arg(idx + 1).arg(notificationDialog.totalMeasurements).arg(scriptName).arg(errStr)
+                ackTimeoutTimer.restart()
+            }
+
             function onMcuNakSkipped(seq) {
                 if (notificationDialog.visible && notificationDialog.isMeasuring) {
-                    console.log("[MCU] NAK skipped seq", seq, "- advancing measurement index")
                     var idx = notificationDialog.currentMeasurementIndex
+                    var scriptName = ""
                     if (idx < notificationDialog.validScriptsForPair.length) {
                         var script = notificationDialog.validScriptsForPair[idx]
+                        scriptName = String(script.displayText || "")
                         if (mainContent) mainContent._updateMeasurementForScript(
-                            String(script.displayText || ""), String(script.scriptType || ""), -1, 0)
+                            scriptName, String(script.scriptType || ""), -1, 0)
                     }
+                    console.warn("[MCU] NAK hết retry seq", seq, "script:", scriptName, "- bỏ qua")
+                    notificationDialog.statusMessage = qsTr("✗ Hết retry [%1/%2] %3 — bỏ qua")
+                        .arg(idx + 1).arg(notificationDialog.totalMeasurements).arg(scriptName)
                     notificationDialog._resetReadingState()
                     notificationDialog.currentMeasurementIndex++
                     if (notificationDialog.currentMeasurementIndex >= notificationDialog.totalMeasurements) {
@@ -1577,36 +1612,38 @@ ApplicationWindow {
                         cursorShape: Qt.PointingHandCursor
                         onClicked: {
                             if (notificationDialog.isPaused) {
-                                console.log("[DEBUG] User bam 'Resume' - gui 0x07, phase:", notificationDialog.pausedDuringPhase)
+                                // === RESUME: tiếp tục từ bài đo đang dừng ===
+                                var resumeIdx = notificationDialog.pausedMeasurementIndex
+                                console.log("[DEBUG] User bam 'Resume' - tiep tuc tu index", resumeIdx, "/", notificationDialog.totalMeasurements)
                                 notificationDialog.isPaused = false
-                                if (notificationDialog.pausedDuringPhase === "sending") {
-                                    notificationDialog.statusMessage = qsTr("Resume - gửi lại bản tin...")
-                                    notificationDialog.isSending = true
-                                    notificationDialog.allPacketsSentDone = false
-                                    notificationDialog.mcuReady = false
-                                    notificationDialog.startTestSent = false
-                                    if (mcuSender && mcuSender.sendTestScripts(notificationDialog.validScriptsForPair)) {
-                                        notificationDialog.statusMessage = qsTr("Gửi packet 1/%1 - chờ ACK...").arg(mcuSender.queuedPacketCount)
-                                        ackTimeoutTimer.restart()
-                                    }
-                                } else if (notificationDialog.pausedDuringPhase === "measuring") {
-                                    notificationDialog.statusMessage = qsTr("Resume - tiếp tục đo từ %1/%2...").arg(notificationDialog.currentMeasurementIndex + 1).arg(notificationDialog.totalMeasurements)
-                                    notificationDialog.isMeasuring = true
-                                    if (mcuSender) { startTestTimeoutTimer.restart() }
+                                notificationDialog.pauseDuringPhase = "" 
+                                notificationDialog.currentMeasurementIndex = resumeIdx
+                                notificationDialog.isSending = true
+                                notificationDialog.isMeasuring = true
+                                notificationDialog.allPacketsSentDone = false
+                                
+                                // Chỉ gửi các bài còn lại từ resumeIdx, không gửi lại từ đầu
+                                var remainingScripts = notificationDialog.validScriptsForPair.slice(resumeIdx)
+                                notificationDialog.statusMessage = qsTr("Resume - tiếp tục đo %1/%2...").arg(resumeIdx + 1).arg(notificationDialog.totalMeasurements)
+                                if (remainingScripts.length > 0 && mcuSender && mcuSender.sendTestScripts(remainingScripts)) {
+                                    notificationDialog.statusMessage = qsTr("Resume - Gửi packet 1/%1 - chờ ACK...").arg(mcuSender.queuedPacketCount)
+                                    ackTimeoutTimer.restart()
                                 } else {
-                                    notificationDialog.statusMessage = qsTr("Resume - chờ MCU sẵn sàng...")
-                                    notificationDialog.mcuReady = false
+                                    notificationDialog.isSending = false
+                                    notificationDialog.statusMessage = qsTr("⚠ Lỗi gửi resume!")
                                 }
-                                notificationDialog.pausedDuringPhase = ""
                             } else {
-                                console.log("[DEBUG] User bam 'Stop' - gui 0x02")
+                                // === STOP/PAUSE: lưu vị trí đang đo ===
+                                console.log("[DEBUG] User bam 'Stop' - tam dung tai index", notificationDialog.currentMeasurementIndex)
                                 if (notificationDialog.isSending) { notificationDialog.pausedDuringPhase = "sending" }
                                 else if (notificationDialog.isMeasuring) { notificationDialog.pausedDuringPhase = "measuring" }
                                 else { notificationDialog.pausedDuringPhase = "waiting" }
+                                // Lưu index bài đo đang chờ để resume tiếp tục đúng chỗ
+                                notificationDialog.pausedMeasurementIndex = notificationDialog.currentMeasurementIndex
                                 notificationDialog.isPaused = true
                                 notificationDialog.isSending = false
                                 notificationDialog.isMeasuring = false
-                                notificationDialog.statusMessage = qsTr("⏸ Đã tạm dừng (%1). Bấm Resume để tiếp tục.").arg(notificationDialog.pausedDuringPhase === "sending" ? "đang gửi" : notificationDialog.pausedDuringPhase === "measuring" ? "đang đo" : "chờ")
+                                notificationDialog.statusMessage = qsTr("⏸ Đã tạm dừng (bài %1/%2). Bấm Resume để tiếp tục.").arg(notificationDialog.currentMeasurementIndex + 1).arg(notificationDialog.totalMeasurements)
                                 if (typeof mcuSender !== "undefined" && mcuSender) { mcuSender.cancelQueue() }
                                 ackTimeoutTimer.stop(); startTestTimeoutTimer.stop(); measurementReadTimer.stop()
                             }

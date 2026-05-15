@@ -79,6 +79,27 @@ void MrSeriesController::applySettings()
                     .arg(m_setVoltage).arg(m_setCurrent).arg(m_setOCP));
 }
 
+void MrSeriesController::applyVoltage()
+{
+    if (!isConnected()) { emit logMessage("[MR3K] Not connected"); return; }
+    m_client->sendCommand(QStringLiteral("VOLT %1").arg(m_setVoltage, 0, 'f', 2));
+    emit logMessage(QStringLiteral("[MR3K] VOLT %1 V").arg(m_setVoltage, 0, 'f', 2));
+}
+
+void MrSeriesController::applyCurrent()
+{
+    if (!isConnected()) { emit logMessage("[MR3K] Not connected"); return; }
+    m_client->sendCommand(QStringLiteral("CURR %1").arg(m_setCurrent, 0, 'f', 3));
+    emit logMessage(QStringLiteral("[MR3K] CURR %1 A").arg(m_setCurrent, 0, 'f', 3));
+}
+
+void MrSeriesController::applyOCP()
+{
+    if (!isConnected()) { emit logMessage("[MR3K] Not connected"); return; }
+    m_client->sendCommand(QStringLiteral("CURR:PROT %1").arg(m_setOCP, 0, 'f', 3));
+    emit logMessage(QStringLiteral("[MR3K] CURR:PROT %1 A").arg(m_setOCP, 0, 'f', 3));
+}
+
 void MrSeriesController::setOutput(bool enabled)
 {
     if (!isConnected()) { emit logMessage("[MR3K] Not connected"); return; }

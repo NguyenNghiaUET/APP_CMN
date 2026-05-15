@@ -20,6 +20,10 @@ Item {
     property int _currentTestIndex: 0
     property int _manualTestState: 0 // 0: Idle, 1: Gửi lệnh, 2: Chờ đóng Relay, 3: Đọc máy đo
     property int _autoTestState: 0
+    property int _targetNumReadings: 1
+    property var _readingValues: []
+    property int _currentReadingIndex: 0
+    property double _measureStartTime: 0
 
     property string testStartTime: ""
     property string testEndTime: ""
@@ -202,6 +206,8 @@ Item {
                 pinB: String(s.pinB || ""),
                 portPinA: s.portPinA !== undefined ? Number(s.portPinA) : -1,
                 portPinB: s.portPinB !== undefined ? Number(s.portPinB) : -1,
+                portLabelA: String(s.portLabelA || ""),
+                portLabelB: String(s.portLabelB || ""),
                 limitLower: (s.limitLower !== undefined && s.limitLower !== null && s.limitLower !== "") ? (parseFloat(s.limitLower) || 0) : 0,
                 limitUpper: (s.limitUpper !== undefined && s.limitUpper !== null && s.limitUpper !== "") ? (parseFloat(s.limitUpper) || 999999) : 999999,
                 deviceConfig: s.deviceConfig !== undefined ? s.deviceConfig : false,
@@ -306,10 +312,26 @@ Item {
         editorDischargeDelay.text = String(item.dischargeDelay !== undefined ? item.dischargeDelay : 100)
     }
 
+    function clearManualResults() {
+        for (var i = 0; i < manualListModel.count; i++) {
+            manualListModel.setProperty(i, "measuredValue", "")
+            manualListModel.setProperty(i, "measureTime", "")
+            manualListModel.setProperty(i, "resultStatus", "")
+            if (i < rightTableModel.count) {
+                rightTableModel.setProperty(i, "value", "")
+                rightTableModel.setProperty(i, "time", "")
+                rightTableModel.setProperty(i, "status", "")
+            }
+        }
+        root.testStartTime = ""
+        root.testEndTime = ""
+        _statusText = ""
+    }
+
     function runManualTest() {
         if (_isTesting) return
-        _syncCheckAllToModel() // Đồng bộ override vào model trước khi gom queue
-        
+        _syncCheckAllToModel()
+
         root.testStartTime = new Date().toLocaleString("en-US")
         root.testEndTime = ""
 
@@ -317,30 +339,30 @@ Item {
         for (var i = 0; i < manualListModel.count; i++) {
             var item = manualListModel.get(i)
             if (item.checked && isMeasurable(item.scriptType)) {
-                var payload = {
-                    modelIndex: i, // Lưu lại index thật trong bảng đẻ cập nhật KQ
+                scriptsToRun.push({
+                    modelIndex: i,
+                    displayText: item.displayText,
                     scriptType: item.scriptType,
                     portPinA: item.portPinA,
                     portPinB: item.portPinB,
-                    portLabelA: item.labelA,
-                    portLabelB: item.labelB,
-                    labelA: item.labelA,
+                    portLabelA: item.portLabelA,
                     pinA: item.pinA,
-                    labelB: item.labelB,
+                    portLabelB: item.portLabelB,
                     pinB: item.pinB,
                     measureVoltage: item.measureVoltage || 250,
                     resistanceRange: item.resistanceRange || "AUTO",
                     deviceSpeed: item.deviceSpeed || "SLOW2",
+                    deviceConfig: item.deviceConfig || false,
                     limitLower: item.limitLower,
                     limitUpper: item.limitUpper,
+                    numReadings: item.numReadings !== undefined ? Number(item.numReadings) : 1,
                     delayBetween: item.delayBetween || 10,
                     delayAfter: item.delayAfter || 50,
                     trigDelay: item.trigDelay !== undefined ? item.trigDelay : 1,
                     avgCount: item.avgCount !== undefined ? item.avgCount : 1,
                     avgEnabled: item.avgEnabled,
                     dischargeDelay: item.dischargeDelay !== undefined ? item.dischargeDelay : 100
-                }
-                scriptsToRun.push(payload)
+                })
             }
         }
 
@@ -348,51 +370,37 @@ Item {
             _statusText = qsTr("Chưa tick chọn bài đo nào (hoặc không hỗ trợ đo)!")
             return
         }
-
         if (typeof mcuSender === "undefined" || !mcuSender || !mcuSender.isOpen) {
             _statusText = qsTr("Lỗi: Port MCU chưa kết nối")
             return
         }
 
-        // --- ĐỒNG BỘ THUẬT TOÁN GOM NHÓM (GROUPING) NHƯ C++ ---
-        // Do McuSender.cpp tự động nhóm các bài chung CMD lại với nhau, 
-        // ta cũng phải nhóm _testQueue y hệt để MCU test đến đâu thì UI chốt kq đến đấy.
+        // Gom nhóm theo CMD (giống C++)
         var cmdOrder = []
         var scriptsByCmd = {}
-        
         for (var k = 0; k < scriptsToRun.length; k++) {
             var sc = scriptsToRun[k]
-            var st = sc.scriptType
-            var cmd = 0x00
-            if (st === "continuity") cmd = 0x8F
-            else if (st === "sheath_insulation") cmd = 0x8D
-            
-            var cmdStr = String(cmd)
-            if (cmdOrder.indexOf(cmdStr) === -1) {
-                cmdOrder.push(cmdStr)
-                scriptsByCmd[cmdStr] = []
-            }
-            scriptsByCmd[cmdStr].push(sc)
+            var cmd = sc.scriptType === "continuity" ? "143" : sc.scriptType === "sheath_insulation" ? "141" : "0"
+            if (cmdOrder.indexOf(cmd) === -1) { cmdOrder.push(cmd); scriptsByCmd[cmd] = [] }
+            scriptsByCmd[cmd].push(sc)
         }
-        
         var sortedQueue = []
-        for (var n = 0; n < cmdOrder.length; n++) {
-            var cmdKey = cmdOrder[n]
-            sortedQueue = sortedQueue.concat(scriptsByCmd[cmdKey])
-        }
+        for (var n = 0; n < cmdOrder.length; n++) sortedQueue = sortedQueue.concat(scriptsByCmd[cmdOrder[n]])
 
         _isTesting = true
-        _testQueue = sortedQueue // Lưu mảng đã xào vị trí
+        _testQueue = sortedQueue
         _currentTestIndex = 0
         _manualTestState = 1
-        _statusText = qsTr("Đang nạp %1 lệnh xuống MCU...").arg(_testQueue.length)
-        
-        console.log("[Manual] Gửi chuỗi đo:", _testQueue.length, "bài")
-        
-        // Cú lừa: Gọi C++ bằng rổ dữ liệu nguyên thủy (để C++ tự làm việc của nó)
-        mcuSender.sendTestScripts(scriptsToRun, false)
-        
-        mcuFailTimer.start()
+        _resetReadingState()
+
+        // Gửi sortedQueue để C++ và _testQueue cùng thứ tự → ACK map đúng modelIndex
+        if (mcuSender.sendTestScripts(sortedQueue, false)) {
+            _statusText = qsTr("Gửi packet 1/%1 - chờ ACK...").arg(mcuSender.queuedPacketCount)
+            mcuFailTimer.restart()
+        } else {
+            _isTesting = false
+            _statusText = qsTr("Lỗi gửi bản tin xuống MCU!")
+        }
     }
 
     function _advanceToNextManualTest() {
@@ -402,88 +410,137 @@ Item {
             _manualTestState = 0
             _statusText = qsTr("✓ Đo hoàn tất %1 bài!").arg(_testQueue.length)
             root.testEndTime = new Date().toLocaleString("en-US")
-            // Gọi sendNextScript() để C++ advance queue → emit allPacketsSent + cleanup
-            if (typeof mcuSender !== "undefined" && mcuSender)
-                mcuSender.sendNextScript()
+            if (typeof mcuSender !== "undefined" && mcuSender) mcuSender.sendNextScript()
             return
         }
-
-        // Nghỉ một tí rồi gửi bản tin tiếp theo
-        var lastScript = _testQueue[_currentTestIndex - 1]
-        var afterDelay = Number(lastScript.delayAfter || 50)
-
-        advanceTimer.interval = afterDelay
-        advanceTimer.start()
+        _manualTestState = 2
+        _statusText = qsTr("Đo bài %1/%2. Chờ MCU...").arg(_currentTestIndex + 1).arg(_testQueue.length)
+        mcuFailTimer.restart()
+        if (typeof mcuSender !== "undefined" && mcuSender) mcuSender.sendNextScript()
     }
-    
+
+    // 50ms delay trước khi đọc máy đo (giống Auto)
     Timer {
-        id: advanceTimer
+        id: measurementReadTimer
+        interval: 50
         repeat: false
         onTriggered: {
-            if (!_isTesting) return
-            _manualTestState = 2
-            _statusText = qsTr("Đo bài %1/%2. Chờ MCU...").arg(_currentTestIndex + 1).arg(_testQueue.length)
-            mcuFailTimer.restart()
-            if (typeof mcuSender !== "undefined" && mcuSender)
-                mcuSender.sendNextScript()
+            if (!_isTesting || _currentTestIndex >= _testQueue.length) return
+            var script = _testQueue[_currentTestIndex]
+            var st = String(script.scriptType || "")
+
+            if (_currentReadingIndex === 0) {
+                _targetNumReadings = (script.numReadings !== undefined && Number(script.numReadings) > 0) ? Number(script.numReadings) : 1
+                _readingValues = []
+            }
+
+            _manualTestState = 3
+            _statusText = qsTr("Đọc máy đo bài %1/%2...").arg(_currentTestIndex + 1).arg(_testQueue.length)
+
+            if (typeof keithley2110 !== "undefined" && keithley2110 && keithley2110.isOpen) {
+                if (_currentReadingIndex === 0) {
+                    // Luôn configure để tránh dùng config cũ từ lần chạy trước
+                    keithley2110.configureRM3544(String(script.resistanceRange || "RANGE_1KΩ"), String(script.deviceSpeed || "FAST"))
+                    var avgCount = (script.numReadings !== undefined && Number(script.numReadings) > 1) ? Number(script.numReadings) : 0
+                    keithley2110.configureAverage(avgCount)
+                }
+                _targetNumReadings = 1
+                keithley2110.readResistance()
+                return
+            }
+            // Fake value khi chưa kết nối máy đo
+            var fakeVal = parseFloat((Math.random() * 0.5).toFixed(6))
+            console.log("[Manual] Fake value:", fakeVal)
+            if (_handleReadingValue(fakeVal)) _advanceToNextManualTest()
         }
     }
 
-    function _saveMeasuredValue(rawValue) {
-        if (_currentTestIndex >= 0 && _currentTestIndex < _testQueue.length) {
-             var currentScript = _testQueue[_currentTestIndex]
-             var rIndex = currentScript.modelIndex // Index thực của dòng trong List QML
-             
-             var script = manualListModel.get(rIndex)
-             var scriptType = script.scriptType
-             var adjustedValue = Number(rawValue)
+    function _handleReadingValue(value) {
+        _readingValues.push(value)
+        _currentReadingIndex++
 
-             // --- ÁP DỤNG HIỆU CHUẨN ---
-             if (mainContent !== null) {
-                 var isCable = (calibrationMode === qsTr("Hiệu chuẩn theo cáp đo"))
-                 var calibDialog = isCable ? mainContent.cableCalibrationDialog : mainContent.calibrationDialog
-                 
-                 if (calibDialog && isMeasurable(scriptType)) {
-                     var portA = script.portPinA !== undefined ? Number(script.portPinA) : -1
-                     var portB = script.portPinB !== undefined ? Number(script.portPinB) : -1
-                     
-                     if (portA >= 0 || portB >= 0) {
-                         if (typeof calibDialog.getCalibrationOffset === "function") {
-                             var calib = calibDialog.getCalibrationOffset(portA, portB, scriptType)
-                             var cableRes = isCable ? 0 : (calibDialog.cableResistance || 0)
-                             
-                             if (calib.offset !== 0 || cableRes !== 0) {
-                                 adjustedValue = adjustedValue - calib.offset - cableRes
-                             }
-                         }
-                     }
-                 }
-             }
-
-             manualListModel.setProperty(rIndex, "measuredValue", adjustedValue)
-             
-             // --- Tính toán PASS / FAIL ---
-             var stat = "PASS"
-             var lLow = Number(script.limitLower)
-             var lUp = Number(script.limitUpper)
-             if (!isNaN(lLow) && adjustedValue < lLow) stat = "FAIL"
-             if (!isNaN(lUp) && lUp > 0 && adjustedValue > lUp) stat = "FAIL"
-             
-             manualListModel.setProperty(rIndex, "resultStatus", stat)
-             // Lưu tạm text để hiển thị
-             _statusText = qsTr("KQ: %1 %2").arg(adjustedValue.toFixed(4)).arg(stat)
-             
-             if (rIndex === _selectedIndex) syncEditorFromSelection()
-             buildRightTable()
-             
-             // Chuyển sang bài kế tiếp
-             _advanceToNextManualTest()
+        if (_currentReadingIndex < _targetNumReadings) {
+            var betweenDelay = _currentTestIndex < _testQueue.length ? Number(_testQueue[_currentTestIndex].delayBetween || 100) : 100
+            measurementReadTimer.interval = betweenDelay
+            measurementReadTimer.restart()
+            return false
         }
+
+        // Đủ lần đọc → tính trung bình
+        var sum = 0
+        for (var i = 0; i < _readingValues.length; i++) sum += _readingValues[i]
+        var avgValue = sum / _readingValues.length
+
+        var elapsedMs = (_measureStartTime > 0) ? (Date.now() - _measureStartTime) : 0
+        var timeStr = elapsedMs >= 1000 ? (elapsedMs / 1000).toFixed(2) + " s" : Math.round(elapsedMs) + " ms"
+
+        if (_currentTestIndex < _testQueue.length) {
+            var currentScript = _testQueue[_currentTestIndex]
+            var rIndex = currentScript.modelIndex
+            var modelItem = manualListModel.get(rIndex)
+            var scriptType = modelItem.scriptType
+            var adjustedValue = avgValue
+
+            // Áp dụng hiệu chuẩn
+            if (mainContent !== null) {
+                var isCable = (calibrationMode === qsTr("Hiệu chuẩn theo cáp đo"))
+                var calibDialog = isCable ? mainContent.cableCalibrationDialog : mainContent.calibrationDialog
+                if (calibDialog && isMeasurable(scriptType)) {
+                    var portA = modelItem.portPinA !== undefined ? Number(modelItem.portPinA) : -1
+                    var portB = modelItem.portPinB !== undefined ? Number(modelItem.portPinB) : -1
+                    if ((portA >= 0 || portB >= 0) && typeof calibDialog.getCalibrationOffset === "function") {
+                        var calib = calibDialog.getCalibrationOffset(portA, portB, scriptType)
+                        var cableRes = isCable ? 0 : (calibDialog.cableResistance || 0)
+                        if (calib.offset !== 0 || cableRes !== 0)
+                            adjustedValue = adjustedValue - calib.offset - cableRes
+                    }
+                }
+            }
+
+            manualListModel.setProperty(rIndex, "measuredValue", adjustedValue)
+            manualListModel.setProperty(rIndex, "measureTime", timeStr)
+
+            // PASS/FAIL
+            var stat = "PASS"
+            var lLow = Number(modelItem.limitLower)
+            var lUp = Number(modelItem.limitUpper)
+            if (scriptType === "continuity") {
+                if (!isNaN(lUp) && lUp > 0 && adjustedValue > lUp) stat = "FAIL"
+            } else {
+                if (!isNaN(lLow) && adjustedValue < lLow) stat = "FAIL"
+            }
+
+            manualListModel.setProperty(rIndex, "resultStatus", stat)
+
+            var OL_THRESHOLD = 9.9e36
+            var displayVal = adjustedValue >= OL_THRESHOLD ? "OL" :
+                adjustedValue >= 1000 ? (adjustedValue / 1000).toFixed(3) + " kΩ" :
+                adjustedValue.toFixed(4) + " Ω"
+            _statusText = qsTr("KQ: %1 %2").arg(displayVal).arg(stat)
+
+            if (rIndex < rightTableModel.count) {
+                rightTableModel.setProperty(rIndex, "value", displayVal)
+                rightTableModel.setProperty(rIndex, "time", timeStr)
+                rightTableModel.setProperty(rIndex, "status", stat)
+            }
+            if (rIndex === _selectedIndex) syncEditorFromSelection()
+        }
+
+        var afterDelay = _currentTestIndex < _testQueue.length ? Number(_testQueue[_currentTestIndex].delayAfter || 50) : 50
+        measurementReadTimer.interval = afterDelay
+        _resetReadingState()
+        return true
+    }
+
+    function _resetReadingState() {
+        _currentReadingIndex = 0
+        _targetNumReadings = 1
+        _readingValues = []
     }
 
     Timer {
         id: mcuFailTimer
-        interval: 5000
+        interval: 200000
         repeat: false
         onTriggered: {
             if (_isTesting) {
@@ -497,18 +554,50 @@ Item {
 
     Connections {
         target: typeof mcuSender !== "undefined" ? mcuSender : null
+
+        function onQueueChanged() {
+            if (!_isTesting) return
+            if (mcuSender.isSendingQueue) {
+                _statusText = qsTr("Gửi packet %1/%2 - chờ ACK...").arg(mcuSender.currentPacketIndex + 1).arg(mcuSender.queuedPacketCount)
+                mcuFailTimer.restart()
+            }
+        }
+
+        function onAllPacketsSent() {
+            if (!_isTesting) return
+            _isTesting = false
+            _manualTestState = 0
+            _statusText = qsTr("✓ Đo hoàn tất %1 bài!").arg(_testQueue.length)
+            root.testEndTime = new Date().toLocaleString("en-US")
+            mcuFailTimer.stop()
+        }
+
         function onMcuAckReceived() {
             if (!_isTesting) return
             mcuFailTimer.stop()
             _manualTestState = 3
+            _measureStartTime = Date.now()
             _statusText = qsTr("Đọc máy đo bài %1/%2...").arg(_currentTestIndex + 1).arg(_testQueue.length)
-            if (typeof keithley2110 !== "undefined" && keithley2110 && keithley2110.isOpen) {
-                keithley2110.readResistance()
-            } else {
-                var fakeVal = parseFloat((Math.random() * 0.5).toFixed(6))
-                console.log("[Manual] Fake value:", fakeVal)
-                _saveMeasuredValue(fakeVal)
+            measurementReadTimer.interval = 50
+            measurementReadTimer.restart()
+        }
+
+        function onMcuNakSkipped(seq) {
+            if (!_isTesting) return
+            if (_currentTestIndex < _testQueue.length) {
+                var cs = _testQueue[_currentTestIndex]
+                var nakElapsed = (_measureStartTime > 0) ? (Date.now() - _measureStartTime) : 0
+                var nakTimeStr = nakElapsed >= 1000 ? (nakElapsed / 1000).toFixed(2) + " s" : Math.round(nakElapsed) + " ms"
+                manualListModel.setProperty(cs.modelIndex, "resultStatus", "FAIL")
+                manualListModel.setProperty(cs.modelIndex, "measureTime", nakTimeStr)
+                if (cs.modelIndex < rightTableModel.count) {
+                    rightTableModel.setProperty(cs.modelIndex, "value", "NAK")
+                    rightTableModel.setProperty(cs.modelIndex, "time", nakTimeStr)
+                    rightTableModel.setProperty(cs.modelIndex, "status", "FAIL")
+                }
             }
+            _resetReadingState()
+            _advanceToNextManualTest()
         }
     }
 
@@ -516,13 +605,25 @@ Item {
         target: typeof keithley2110 !== "undefined" ? keithley2110 : null
         function onResistanceRead(val) {
             if (!_isTesting) return
-            _statusText = qsTr("KQ: ") + val.toFixed(4) + " Ω"
-            _saveMeasuredValue(val)
+            if (_handleReadingValue(val)) _advanceToNextManualTest()
         }
         function onErrorOccurred(err) {
             if (!_isTesting) return
-            _isTesting = false
-            _statusText = qsTr("Lỗi RM3544: ") + err
+            if (_currentTestIndex < _testQueue.length) {
+                var cs = _testQueue[_currentTestIndex]
+                var errElapsed = (_measureStartTime > 0) ? (Date.now() - _measureStartTime) : 0
+                var errTimeStr = errElapsed >= 1000 ? (errElapsed / 1000).toFixed(2) + " s" : Math.round(errElapsed) + " ms"
+                manualListModel.setProperty(cs.modelIndex, "resultStatus", "FAIL")
+                manualListModel.setProperty(cs.modelIndex, "measureTime", errTimeStr)
+                if (cs.modelIndex < rightTableModel.count) {
+                    rightTableModel.setProperty(cs.modelIndex, "value", "ERR")
+                    rightTableModel.setProperty(cs.modelIndex, "time", errTimeStr)
+                    rightTableModel.setProperty(cs.modelIndex, "status", "FAIL")
+                }
+            }
+            _resetReadingState()
+            _advanceToNextManualTest()
+            _statusText = qsTr("Lỗi Keithley: ") + err
         }
     }
 
@@ -1321,7 +1422,8 @@ Item {
                                 Label { text: qsTr("Giá trị đo"); color: "white"; Layout.preferredWidth: 70; horizontalAlignment: Text.AlignHCenter; font.bold: true; font.pixelSize: 10 }
                                 Label { text: qsTr("Cận dưới"); color: "white"; Layout.preferredWidth: 65; horizontalAlignment: Text.AlignHCenter; font.bold: true; font.pixelSize: 10 }
                                 Label { text: qsTr("Cận trên"); color: "white"; Layout.preferredWidth: 65; horizontalAlignment: Text.AlignHCenter; font.bold: true; font.pixelSize: 10 }
-                                Label { text: qsTr("Thời gian"); color: "white"; Layout.preferredWidth: 66; horizontalAlignment: Text.AlignHCenter; font.bold: true; font.pixelSize: 10 }
+                                Label { text: qsTr("Thời gian"); color: "white"; Layout.preferredWidth: 120; horizontalAlignment: Text.AlignHCenter; font.bold: true; font.pixelSize: 10 }
+                                Label { text: qsTr("KQ"); color: "white"; Layout.preferredWidth: 45; horizontalAlignment: Text.AlignHCenter; font.bold: true; font.pixelSize: 10 }
                             }
                         }
 
@@ -1398,7 +1500,15 @@ Item {
                                     }
                                     Label { text: model.lower; Layout.preferredWidth: 65; horizontalAlignment: Text.AlignHCenter; font.pixelSize: 10; color: "#37474f" }
                                     Label { text: model.upper; Layout.preferredWidth: 65; horizontalAlignment: Text.AlignHCenter; font.pixelSize: 10; color: "#37474f" }
-                                    Label { text: model.time; Layout.preferredWidth: 66; horizontalAlignment: Text.AlignHCenter; font.pixelSize: 10; color: "#546e7a" }
+                                    Label { text: model.time; Layout.preferredWidth: 120; horizontalAlignment: Text.AlignHCenter; font.pixelSize: 10; color: "#546e7a" }
+                                    Label {
+                                        text: model.status
+                                        Layout.preferredWidth: 45
+                                        horizontalAlignment: Text.AlignHCenter
+                                        font.pixelSize: 10
+                                        font.bold: model.status !== ""
+                                        color: model.status === "PASS" ? "#2e7d32" : model.status === "FAIL" ? "#c62828" : "#888"
+                                    }
                                 }
 
                                 MouseArea {
@@ -1473,6 +1583,24 @@ Item {
                                             hoverEnabled: true
                                             cursorShape: Qt.PointingHandCursor
                                             onClicked: exportManualToExcel()
+                                        }
+                                    }
+
+                                    Rectangle {
+                                        Layout.preferredWidth: 90
+                                        Layout.preferredHeight: 40
+                                        radius: 6
+                                        color: clearBtnMa.pressed ? "#b71c1c" : clearBtnMa.containsMouse ? "#e53935" : "#ef5350"
+                                        border.color: "#b71c1c"
+                                        Behavior on color { ColorAnimation { duration: 80 } }
+                                        Text { anchors.centerIn: parent; text: qsTr("🗑 Xóa KQ"); font.bold: true; font.pixelSize: 12; color: "white" }
+                                        MouseArea {
+                                            id: clearBtnMa
+                                            anchors.fill: parent
+                                            hoverEnabled: true
+                                            cursorShape: Qt.PointingHandCursor
+                                            enabled: !_isTesting
+                                            onClicked: clearManualResults()
                                         }
                                     }
 

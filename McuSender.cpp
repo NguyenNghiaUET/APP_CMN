@@ -15,7 +15,27 @@
 #include <QPair>
 #include <cstring>
 
-// CRC8 XOR — khớp calc_crc trên MCU:
+// ── Relay pin map ─────────────────────────────────────────────────────────────
+// TODO: cập nhật số chân thực tế theo sơ đồ phần cứng
+const QMap<QString, int> McuSender::kRelayPinMap = {
+    {"VLS_ON",     1},
+    {"Bat1_ON",    2},
+    {"Bat2_ON",    3},
+    {"Gen_ON",     4},
+    {"VLS_BatON",  5},
+    {"VLS_BatOFF", 6},
+    {"MPSS_TBKT",  7},
+    {"CMD_ERM",    8},
+    {"CMD_PUMP",   9},
+    {"CCBH_in",   10},
+    {"CMD_PPA",   11},
+    {"CMD_Pyro1", 12},
+    {"CMD_Pyro2", 13},
+    {"CMD_TJE",   14},
+    {"CMD_FUZE",  15},
+};
+
+// ── CRC8 XOR — khớp calc_crc trên MCU:
 //   crc = STX ^ total_msg ^ seq ^ cmd ^ len
 //   for i in 0..len-1: crc ^= data[i]
 // port = 0x00 cho các packet không có PORT field (backward compat)
@@ -398,7 +418,8 @@ bool McuSender::sendRawPacket(const QByteArray &packet)
 void McuSender::sendNextQueuedPacket()
 {
     if (!m_isSendingQueue) return;
-    
+
+    m_retryCount = 0;
     m_currentQueueIndex++;
     emit queueChanged();
     
@@ -418,6 +439,66 @@ void McuSender::sendNextQueuedPacket()
     if (!sendRawPacket(m_packetQueue[m_currentQueueIndex])) {
         cancelQueue();
     }
+}
+
+bool McuSender::sendRelayFrame(int pin, bool state)
+{
+    if (!m_serial.isOpen()) {
+        emit errorOccurred(tr("Cổng COM chưa mở"));
+        return false;
+    }
+
+    const quint8 STX   = 0xA5;
+    const quint8 ETX   = 0x5A;
+    const quint8 total = 0x01;
+    const quint8 seq   = 0x01;
+    const quint8 cmd   = CMD_RELAY;
+    const quint8 port  = 0x00;
+
+    QByteArray data;
+    data.append(static_cast<char>(static_cast<quint8>(pin)));
+    data.append(static_cast<char>(state ? 0xA0 : 0x00)); // ON=0xA0, OFF=0x00
+    const quint8 len = static_cast<quint8>(data.size());
+
+    quint8 crc = STX ^ total ^ seq ^ cmd ^ port ^ len;
+    for (int i = 0; i < data.size(); i++)
+        crc ^= static_cast<quint8>(data.at(i));
+
+    QByteArray packet;
+    packet.append(static_cast<char>(STX));
+    packet.append(static_cast<char>(total));
+    packet.append(static_cast<char>(seq));
+    packet.append(static_cast<char>(cmd));
+    packet.append(static_cast<char>(port));
+    packet.append(static_cast<char>(len));
+    packet.append(data);
+    packet.append(static_cast<char>(crc));
+    packet.append(static_cast<char>(ETX));
+
+    m_sendingRelay = true;
+    m_relayRetry   = 0;
+
+    qDebug() << QString("[RELAY] Gửi pin=%1 state=%2 | HEX: %3")
+                .arg(pin).arg(state ? "ON" : "OFF")
+                .arg(QString(packet.toHex(' ').toUpper()));
+
+    return sendRawPacket(packet);
+}
+
+int McuSender::relayPin(const QString &name) const
+{
+    return kRelayPinMap.value(name, -1);
+}
+
+bool McuSender::sendRelayByName(const QString &name, bool state)
+{
+    int pin = kRelayPinMap.value(name, -1);
+    if (pin < 0) {
+        emit errorOccurred(tr("Relay '%1' không có trong pin map").arg(name));
+        qDebug() << "[RELAY] Không tìm thấy pin cho relay:" << name;
+        return false;
+    }
+    return sendRelayFrame(pin, state);
 }
 
 void McuSender::sendNextScript()
@@ -478,6 +559,7 @@ void McuSender::onReadyRead()
     // Xử lý buffer để tìm các packet hợp lệ
     processReceivedData();
 }
+
 
 void McuSender::processReceivedData()
 {
@@ -546,22 +628,72 @@ void McuSender::processReceivedData()
 
             m_receiveBuffer.remove(0, ackPacketSize);
 
+            // ── Build log string ──────────────────────────────────────────
+            auto errName = [](quint8 e) -> QString {
+                switch (e) {
+                case 0x01: return "CRC sai";
+                case 0x02: return "Timeout";
+                case 0x03: return "Hết retry";
+                case 0x04: return "MCU bận";
+                default:   return QString("0x%1").arg(e, 2, 16, QChar('0')).toUpper();
+                }
+            };
+
             if (cmd == 0xAA) {
-                m_retryCount = 0;
-                qDebug() << "[MCU] ACK OK — QML đọc máy đo rồi gọi sendNextScript()";
-                emit mcuAckReceived();
-            } else if (cmd == 0xBB) {
-                emit mcuNakReceived(static_cast<int>(err));
-                m_retryCount++;
-                qDebug() << QString("[MCU] NAK err=0x%1 retry %2/%3")
-                            .arg(err, 2, 16, QChar('0')).arg(m_retryCount).arg(MAX_RETRIES);
-                if (m_retryCount < MAX_RETRIES) {
-                    if (!m_lastSentPacket.isEmpty())
-                        sendRawPacket(m_lastSentPacket);
+                // ── ACK ───────────────────────────────────────────────────
+                QString rawHex = QString("A5 AA %1 00 %2 5A")
+                    .arg(seq, 2, 16, QChar('0')).toUpper()
+                    .arg(crc, 2, 16, QChar('0')).toUpper();
+
+                if (m_sendingRelay) {
+                    m_sendingRelay = false;
+                    m_relayRetry   = 0;
+                    emit mcuFrameReceived(rawHex, QString("ACK relay seq=%1").arg(seq));
+                    qDebug() << "[MCU] RELAY ACK OK";
+                    emit mcuRelayAck();
                 } else {
-                    qDebug() << "[MCU] Max retries reached, skipping seq" << (m_currentQueueIndex + 1);
-                    emit mcuNakSkipped(m_currentQueueIndex + 1);
-                    sendNextQueuedPacket();
+                    m_retryCount = 0;
+                    emit mcuFrameReceived(rawHex, QString("ACK seq=%1").arg(seq));
+                    qDebug() << "[MCU] ACK OK — QML đọc máy đo rồi gọi sendNextScript()";
+                    emit mcuAckReceived();
+                }
+
+            } else if (cmd == 0xBB) {
+                // ── NAK ───────────────────────────────────────────────────
+                QString rawHex = QString("A5 BB %1 %2 %3 5A")
+                    .arg(seq, 2, 16, QChar('0')).toUpper()
+                    .arg(err, 2, 16, QChar('0')).toUpper()
+                    .arg(crc, 2, 16, QChar('0')).toUpper();
+
+                if (m_sendingRelay) {
+                    m_relayRetry++;
+                    emit mcuFrameReceived(rawHex, QString("NAK relay [%1] retry=%2/%3")
+                        .arg(errName(err)).arg(m_relayRetry).arg(MAX_RETRIES));
+                    qDebug() << QString("[MCU] RELAY NAK err=0x%1 retry %2/%3")
+                                .arg(err, 2, 16, QChar('0')).arg(m_relayRetry).arg(MAX_RETRIES);
+                    if (m_relayRetry < MAX_RETRIES) {
+                        if (!m_lastSentPacket.isEmpty())
+                            sendRawPacket(m_lastSentPacket);
+                    } else {
+                        m_sendingRelay = false;
+                        m_relayRetry   = 0;
+                        emit mcuRelayNak(static_cast<int>(err));
+                    }
+                } else {
+                    emit mcuFrameReceived(rawHex, QString("NAK seq=%1 [%2] retry=%3/%4")
+                        .arg(seq).arg(errName(err)).arg(m_retryCount + 1).arg(MAX_RETRIES));
+                    emit mcuNakReceived(static_cast<int>(err));
+                    m_retryCount++;
+                    qDebug() << QString("[MCU] NAK err=0x%1 retry %2/%3")
+                                .arg(err, 2, 16, QChar('0')).arg(m_retryCount).arg(MAX_RETRIES);
+                    if (m_retryCount < MAX_RETRIES) {
+                        if (!m_lastSentPacket.isEmpty())
+                            sendRawPacket(m_lastSentPacket);
+                    } else {
+                        qDebug() << "[MCU] Max retries reached, skipping seq" << (m_currentQueueIndex + 1);
+                        emit mcuNakSkipped(m_currentQueueIndex + 1);
+                        sendNextQueuedPacket();
+                    }
                 }
             }
             continue;
@@ -835,6 +967,7 @@ bool McuSender::sendTestPacket()
             return false;
         }
         
+
     qDebug() << QString(">>> Da gui test packet thanh cong");
     return true;
 }

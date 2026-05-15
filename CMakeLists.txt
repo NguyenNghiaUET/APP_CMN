@@ -35,6 +35,7 @@ qt_add_executable(appCMN_TESTING
     MdlSeriesController.cpp
     ScpiTcpClient.cpp
     SignalMeasure.cpp
+    CmnAutoTestRunner.cpp
 )
 
 qt_add_qml_module(appCMN_TESTING
@@ -42,6 +43,7 @@ qt_add_qml_module(appCMN_TESTING
     QML_FILES
         Main.qml
         AutoTestWindow.qml
+        CmnAutoTestWindow.qml
         MainContent.qml
         ManualTestView.qml
         AppConfigDialog.qml

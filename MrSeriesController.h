@@ -24,6 +24,9 @@ public:
     Q_INVOKABLE void connectDevice(const QString &host, int port = 5025);
     Q_INVOKABLE void disconnectDevice();
     Q_INVOKABLE void applySettings();
+    Q_INVOKABLE void applyVoltage();
+    Q_INVOKABLE void applyCurrent();
+    Q_INVOKABLE void applyOCP();
     Q_INVOKABLE void setOutput(bool enabled);
 
     bool isConnected() const;

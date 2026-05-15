@@ -16,7 +16,8 @@ ApplicationWindow {
 
 
 
-    AutoTestWindow { id: autoTestWindow }
+    AutoTestWindow    { id: autoTestWindow }
+    CmnAutoTestWindow { id: cmnAutoWindow }
 
     // ── Dark steel military palette ────────────────────────────────────
     readonly property color cBg:      "#0c1014"
@@ -37,6 +38,58 @@ ApplicationWindow {
 
     // login state
     property bool loggedIn: false
+
+    // ── Manual relay state (COL 2) ────────────────────────────────────
+    property var  relayStates:    ({})   // {name: true/false}, undefined = chưa đặt
+    property var  _relayQueue:    []
+    property int  _relayQueueIdx: 0
+    property bool _sendingRelays: false
+
+    function _sendAllRelays() {
+        if (_sendingRelays) return
+        var keys = Object.keys(relayStates)
+        if (keys.length === 0) { appController.addLog("[MCU] Không có relay nào được đặt!"); return }
+        if (!mcuSender.isOpen)  { appController.addLog("[MCU] Cổng COM chưa kết nối!");    return }
+        _relayQueue = []
+        for (var i = 0; i < keys.length; i++)
+            _relayQueue.push({name: keys[i], state: relayStates[keys[i]]})
+        _relayQueueIdx = 0
+        _sendingRelays = true
+        _sendNextRelayItem()
+    }
+
+    function _sendNextRelayItem() {
+        if (_relayQueueIdx >= _relayQueue.length) {
+            _sendingRelays = false
+            relayAckTimer.stop()
+            appController.addLog("[MCU] << SET RELAY hoàn tất " + _relayQueue.length + " relay")
+            return
+        }
+        var r = _relayQueue[_relayQueueIdx]
+        if (!mcuSender.sendRelayByName(r.name, r.state)) {
+            // sendRelayByName trả false (port đóng...) → abort
+            _sendingRelays = false
+            relayAckTimer.stop()
+            appController.addLog("[MCU] LỖI gửi relay " + r.name + " — dừng queue")
+            return
+        }
+        appController.addLog("[MCU] >> " + r.name + (r.state ? "  ON (0xA0)" : "  OFF (0x00)"))
+        relayAckTimer.restart()   // bắt đầu đếm timeout
+    }
+
+    // Timeout chờ ACK relay — nếu MCU không trả lời trong 2s thì skip
+    Timer {
+        id: relayAckTimer
+        interval: 2000
+        repeat: false
+        onTriggered: {
+            if (!root._sendingRelays) return
+            var r = root._relayQueue[root._relayQueueIdx]
+            appController.addLog("[MCU] TIMEOUT relay " + (r ? r.name : "?") + " — không nhận ACK, bỏ qua")
+            root._relayQueueIdx++
+            root._sendNextRelayItem()
+        }
+    }
 
     background: Rectangle { color: cBg }
 
@@ -86,6 +139,8 @@ ApplicationWindow {
                     onTapped: appController.addLog("▶ Run — S/N: " + (snField.text || "(trống)")) }
                 CBtn { lbl: "ĐO KIỂM CÁP"; bc: cPurple; width: 100; height: 32; fs: 11
                     onTapped: autoTestWindow.openWindow() }
+                CBtn { lbl: "AUTO TEST"; bc: "#c06020"; width: 90; height: 32; fs: 11
+                    onTapped: cmnAutoWindow.openWindow() }
 
               Rectangle { width: 1; height: 36; color: cBorder }
 
@@ -359,20 +414,71 @@ ApplicationWindow {
                         Layout.fillWidth: true; Layout.fillHeight: true
                         Layout.margins: 10; spacing: 8
 
-                        // COM port
+                        // COM port — MCU relay (mcuSender)
                         RowLayout {
                             Layout.fillWidth: true; spacing: 6
+                            Text { text: "MCU:"; color: cDim; font.pixelSize: 10; font.family: "Consolas" }
+                            ComboBox {
+                                id: mcuRelayPort
+                                Layout.fillWidth: true; height: 26; font.pixelSize: 11
+                                background: Rectangle { color: cInput; border.color: cBorder; radius: 3 }
+                                contentItem: Text { text: mcuRelayPort.displayText; color: cText
+                                                    font.pixelSize: 11; leftPadding: 6
+                                                    verticalAlignment: Text.AlignVCenter }
+                                Component.onCompleted: {
+                                    var ports = mcuSender.getAvailablePorts()
+                                    model = ports
+                                    var idx = ports.indexOf(mcuSender.portName)
+                                    currentIndex = idx >= 0 ? idx : (ports.length > 0 ? 0 : -1)
+                                }
+                            }
+                            // Refresh
+                            CBtn { lbl: "↻"; bc: "#37474f"; width: 24; height: 26; fs: 12
+                                onTapped: {
+                                    var cur = mcuRelayPort.currentText
+                                    var ports = mcuSender.getAvailablePorts()
+                                    mcuRelayPort.model = ports
+                                    var idx = ports.indexOf(cur)
+                                    mcuRelayPort.currentIndex = idx >= 0 ? idx : (ports.length > 0 ? 0 : -1)
+                                } }
+                            CBtn {
+                                lbl: mcuSender.isOpen ? "Ngắt" : "Kết nối"
+                                bc:  mcuSender.isOpen ? "#546e7a" : cAccent
+                                width: 72; height: 26; fs: 10
+                                onTapped: {
+                                    if (mcuSender.isOpen) {
+                                        mcuSender.closePort()
+                                        appController.addLog("[MCU] Ngắt cổng " + mcuRelayPort.currentText)
+                                    } else {
+                                        if (mcuRelayPort.currentText) mcuSender.portName = mcuRelayPort.currentText
+                                        mcuSender.openPort()
+                                        appController.addLog("[MCU] Kết nối cổng " + mcuRelayPort.currentText + " @115200")
+                                    }
+                                }
+                            }
+                            // Status dot
+                            Rectangle {
+                                width: 8; height: 8; radius: 4
+                                color: mcuSender.isOpen ? cGreen : cRed
+                                anchors.verticalCenter: parent.verticalCenter
+                            }
+                        }
+
+                        // COM port — ControllerBox (JSON protocol, giữ lại)
+                        RowLayout {
+                            Layout.fillWidth: true; spacing: 6
+                            Text { text: "BOX:"; color: cDim; font.pixelSize: 10; font.family: "Consolas" }
                             ComboBox {
                                 id: boxPort; model: availablePorts
-                                Layout.preferredWidth: 100; height: 28; font.pixelSize: 11
+                                Layout.fillWidth: true; height: 26; font.pixelSize: 11
                                 background: Rectangle { color: cInput; border.color: cBorder; radius: 3 }
                                 contentItem: Text { text: boxPort.displayText; color: cText
                                                     font.pixelSize: 11; leftPadding: 6
                                                     verticalAlignment: Text.AlignVCenter }
                             }
                             CBtn { lbl: controllerBox.connected ? "Ngắt" : "Kết nối"
-                                bc: controllerBox.connected ? "#546e7a" : cAccent
-                                Layout.preferredWidth: 88; height: 28; fs: 11
+                                bc: controllerBox.connected ? "#546e7a" : "#37474f"
+                                width: 72; height: 26; fs: 10
                                 onTapped: {
                                     if (controllerBox.connected) {
                                         controllerBox.disconnectPort()
@@ -419,30 +525,60 @@ ApplicationWindow {
                                     anchors.fill: parent; anchors.leftMargin: 8; anchors.rightMargin: 8; spacing: 0
                                     Text { text: modelData; Layout.preferredWidth: 120
                                            color: cText; font.pixelSize: 12; font.family: "Consolas" }
-                                    CBtn { lbl:"ON";  bc:cGreen; Layout.preferredWidth:52; height:22; fs:10
+                                    CBtn {
+                                        lbl: "ON"
+                                        bc: root.relayStates[modelData] === true  ? cGreen
+                                          : root.relayStates[modelData] === false ? "#203020"
+                                          : "#37474f"
+                                        Layout.preferredWidth: 52; height: 22; fs: 10
                                         onTapped: {
-                                            controllerBox.setRelay(modelData, true)
-                                            appController.addLog("[BOX] >> " + modelData + "  ON")
-                                        } }
+                                            var ns = Object.assign({}, root.relayStates)
+                                            ns[modelData] = true
+                                            root.relayStates = ns
+                                        }
+                                    }
                                     Item { Layout.preferredWidth: 4 }
-                                    CBtn { lbl:"OFF"; bc:cRed;   Layout.preferredWidth:52; height:22; fs:10
+                                    CBtn {
+                                        lbl: "OFF"
+                                        bc: root.relayStates[modelData] === false ? cRed
+                                          : root.relayStates[modelData] === true  ? "#302020"
+                                          : "#37474f"
+                                        Layout.preferredWidth: 52; height: 22; fs: 10
                                         onTapped: {
-                                            controllerBox.setRelay(modelData, false)
-                                            appController.addLog("[BOX] >> " + modelData + "  OFF")
-                                        } }
+                                            var ns = Object.assign({}, root.relayStates)
+                                            ns[modelData] = false
+                                            root.relayStates = ns
+                                        }
+                                    }
                                     Item { Layout.fillWidth: true }
-                                    Rectangle { width:12; height:12; radius:6
-                                                color: controllerBox.relayResponses[modelData] ? "#69f0ae" : "#334466"
-                                                border.color: controllerBox.relayResponses[modelData] ? "#00c853" : "#445577" }
+                                    // LED: xanh=ON đặt, đỏ=OFF đặt, xám=chưa đặt
+                                    Rectangle {
+                                        width: 12; height: 12; radius: 6
+                                        color: root.relayStates[modelData] === true  ? "#69f0ae"
+                                             : root.relayStates[modelData] === false ? "#ff5252"
+                                             : "#334466"
+                                        border.color: root.relayStates[modelData] === true  ? "#00c853"
+                                                   : root.relayStates[modelData] === false ? "#c62828"
+                                                   : "#445577"
+                                    }
                                 }
                             }
                         }
 
-                        CBtn { lbl: "Restart trạng thái "; bc: cAccent; Layout.fillWidth: true; height: 30; fs: 11
+                        CBtn { lbl: "Restart trạng thái"; bc: "#37474f"; Layout.fillWidth: true; height: 28; fs: 10
                             onTapped: {
                                 controllerBox.requestStatus()
                                 appController.addLog("[BOX] >> REQUEST STATUS")
                             } }
+
+                        // ── SET RELAY — gửi toàn bộ trạng thái đã chọn xuống MCU ──
+                        CBtn {
+                            lbl: root._sendingRelays ? "⏳  ĐANG GỬI..." : "▼  SET RELAY"
+                            bc: "#1565c0"; Layout.fillWidth: true; height: 34; fs: 12
+                            ena: !root._sendingRelays && mcuSender.isOpen
+                                 && Object.keys(root.relayStates).length > 0
+                            onTapped: root._sendAllRelays()
+                        }
                     }
                 }
             }
@@ -500,7 +636,7 @@ ApplicationWindow {
                                             appController.addLog("[MDL] Ngắt kết nối")
                                         } else {
                                             mdlController.connectDevice(mdlIp.text, 5025)
-                                            appController.addLog("[MDL] Kết nối tới " + mdlIp.text + ":5025...")
+                                            appController.addLog("[MDL ] Kết nối tới " + mdlIp.text + ":5025...")
                                         }
                                     } }
                                 Item { Layout.fillWidth: true }
@@ -739,6 +875,26 @@ ApplicationWindow {
         }
     }
 
+    // ── Relay ACK/NAK handler (manual SET RELAY) ─────────────────────
+    Connections {
+        target: mcuSender
+        function onMcuRelayAck() {
+            if (!root._sendingRelays) return
+            relayAckTimer.stop()
+            root._relayQueueIdx++
+            root._sendNextRelayItem()
+        }
+        function onMcuRelayNak(errCode) {
+            if (!root._sendingRelays) return
+            relayAckTimer.stop()
+            var r = root._relayQueue[root._relayQueueIdx]
+            appController.addLog("[MCU] NAK " + (r ? r.name : "?")
+                + " err=0x" + errCode.toString(16).toUpperCase())
+            root._relayQueueIdx++
+            root._sendNextRelayItem()
+        }
+    }
+
     // ══════════════════════════════════════════════════════════════════
     // LOGIN OVERLAY
     // ══════════════════════════════════════════════════════════════════
@@ -898,7 +1054,7 @@ ApplicationWindow {
                     MouseArea {
                         id: btnMa; anchors.fill: parent; hoverEnabled: true
                         onClicked: {
-                            if (userF.text === "admin" && passF.text === "1234") {
+                            if (userF.text === "" && passF.text === "") {
                                 errBox.visible = false
                                 okBox.visible  = true
                                 appController.addLog("✓ Đăng nhập: " + userF.text)
@@ -930,3 +1086,7 @@ ApplicationWindow {
         Component.onCompleted: userF.forceActiveFocus()
     }
 }
+
+
+
+

@@ -7,6 +7,7 @@
 #include <QSerialPortInfo>
 #include <QTimer>
 #include <QStringList>
+#include <QMap>
 
 // Giao tiếp với MCU qua UART (cổng COM / serial port).
 // Cấu hình mặc định: 8N1, baud 115200, không flow control.
@@ -58,6 +59,21 @@ public:
     // QML gọi hàm này sau khi đọc máy đo xong → gửi frame tiếp theo
     Q_INVOKABLE void sendNextScript();
 
+    // Relay control — frame 0xA5, riêng biệt với cable-test queue
+    // CMD_RELAY = 0x86 (TODO: cập nhật đúng CMD firmware)
+    bool sendRelayFrame(int pin, bool state);
+
+    // Gửi relay theo tên — tra pin map nội bộ, dùng được cả QML lẫn C++
+    Q_INVOKABLE bool sendRelayByName(const QString &name, bool state);
+
+    // Tra pin từ tên relay (trả -1 nếu không tìm thấy)
+    Q_INVOKABLE int  relayPin(const QString &name) const;
+
+    static const quint8 CMD_RELAY = 0x86;
+
+    // TODO: cập nhật số chân thực tế theo sơ đồ phần cứng
+    static const QMap<QString, int> kRelayPinMap;
+
 signals:
     void portNameChanged();
     void baudRateChanged();
@@ -72,6 +88,11 @@ signals:
     void mcuNakReceived(int errCode);
     void mcuNakSkipped(int seq);   // max retries exhausted, skipped to next packet
     void allPacketsSent();
+    // Raw frame từ MCU để hiển thị lên UI: hex string + mô tả ngắn
+    void mcuFrameReceived(const QString &hex, const QString &desc);
+    // Relay control signals
+    void mcuRelayAck();                   // relay ACK → gửi relay tiếp theo
+    void mcuRelayNak(int errCode);        // relay NAK sau khi hết retry
 
 private slots:
     void onReadyRead();
@@ -93,6 +114,10 @@ private:
     QByteArray m_lastSentPacket;
     int m_retryCount = 0;
     static const int MAX_RETRIES = 3;
+
+    // Relay path state (tách biệt với cable-test queue)
+    bool m_sendingRelay  = false;
+    int  m_relayRetry    = 0;
 
     QTimer m_pollTimer;
 };
