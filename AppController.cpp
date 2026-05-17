@@ -12,6 +12,7 @@ AppController::AppController(MrSeriesController  *mr,
                              SignalMeasure       *sig,
                              QObject *parent)
     : QObject(parent)
+
 {
     auto fwd = [this](const QString &msg) { addLog(msg); };
     connect(mr,  &MrSeriesController::logMessage,  this, fwd);
