@@ -40,54 +40,40 @@ ApplicationWindow {
     property bool loggedIn: false
 
     // ── Manual relay state (COL 2) ────────────────────────────────────
-    property var  relayStates:    ({})   // {name: true/false}, undefined = chưa đặt
-    property var  _relayQueue:    []
-    property int  _relayQueueIdx: 0
-    property bool _sendingRelays: false
+    property var  relayStates:   ({})
+    property bool _waitingRelayAck: false
 
-    function _sendAllRelays() {
-        if (_sendingRelays) return
-        var keys = Object.keys(relayStates)
-        if (keys.length === 0) { appController.addLog("[MCU] Không có relay nào được đặt!"); return }
-        if (!mcuSender.isOpen)  { appController.addLog("[MCU] Cổng COM chưa kết nối!");    return }
-        _relayQueue = []
-        for (var i = 0; i < keys.length; i++)
-            _relayQueue.push({name: keys[i], state: relayStates[keys[i]]})
-        _relayQueueIdx = 0
-        _sendingRelays = true
-        _sendNextRelayItem()
-    }
-
-    function _sendNextRelayItem() {
-        if (_relayQueueIdx >= _relayQueue.length) {
-            _sendingRelays = false
-            relayAckTimer.stop()
-            appController.addLog("[MCU] << SET RELAY hoàn tất " + _relayQueue.length + " relay")
-            return
-        }
-        var r = _relayQueue[_relayQueueIdx]
-        if (!mcuSender.sendRelayByName(r.name, r.state)) {
-            // sendRelayByName trả false (port đóng...) → abort
-            _sendingRelays = false
-            relayAckTimer.stop()
-            appController.addLog("[MCU] LỖI gửi relay " + r.name + " — dừng queue")
-            return
-        }
-        appController.addLog("[MCU] >> " + r.name + (r.state ? "  ON (0xA0)" : "  OFF (0x00)"))
-        relayAckTimer.restart()   // bắt đầu đếm timeout
-    }
-
-    // Timeout chờ ACK relay — nếu MCU không trả lời trong 2s thì skip
     Timer {
         id: relayAckTimer
         interval: 2000
         repeat: false
         onTriggered: {
-            if (!root._sendingRelays) return
-            var r = root._relayQueue[root._relayQueueIdx]
-            appController.addLog("[MCU] TIMEOUT relay " + (r ? r.name : "?") + " — không nhận ACK, bỏ qua")
-            root._relayQueueIdx++
-            root._sendNextRelayItem()
+            root._waitingRelayAck = false
+            appController.addLog("[MCU] TIMEOUT chờ ACK — relay có thể chưa được bật!")
+        }
+    }
+
+    function _sendAllRelays() {
+        if (!mcuSender.isOpen) { appController.addLog("[MCU] Cổng COM chưa kết nối!"); return }
+
+        var onPins = []
+        var onNames = []
+        var keys = Object.keys(relayStates)
+        for (var i = 0; i < keys.length; i++) {
+            if (relayStates[keys[i]] === true) {
+                var pin = mcuSender.relayPin(keys[i])
+                if (pin >= 0) { onPins.push(pin); onNames.push(keys[i]) }
+            }
+        }
+
+        var onStr = onNames.length > 0 ? onNames.join(", ") : "(không có)"
+        appController.addLog("[MCU] >> SET RELAY — ON: [" + onStr + "] — " + onPins.length + " chân")
+
+        if (mcuSender.sendRelayOnList(onPins)) {
+            root._waitingRelayAck = true
+            relayAckTimer.restart()
+        } else {
+            appController.addLog("[MCU] LỖI gửi SET RELAY")
         }
     }
 
@@ -573,10 +559,9 @@ ApplicationWindow {
 
                         // ── SET RELAY — gửi toàn bộ trạng thái đã chọn xuống MCU ──
                         CBtn {
-                            lbl: root._sendingRelays ? "⏳  ĐANG GỬI..." : "▼  SET RELAY"
+                            lbl: root._waitingRelayAck ? "⏳  CHỜ ACK..." : "▼  SET RELAY"
                             bc: "#1565c0"; Layout.fillWidth: true; height: 34; fs: 12
-                            ena: !root._sendingRelays && mcuSender.isOpen
-                                 && Object.keys(root.relayStates).length > 0
+                            ena: mcuSender.isOpen && !root._waitingRelayAck
                             onTapped: root._sendAllRelays()
                         }
                     }
@@ -879,19 +864,15 @@ ApplicationWindow {
     Connections {
         target: mcuSender
         function onMcuRelayAck() {
-            if (!root._sendingRelays) return
             relayAckTimer.stop()
-            root._relayQueueIdx++
-            root._sendNextRelayItem()
+            root._waitingRelayAck = false
+            appController.addLog("[MCU] << SET RELAY ACK — OK")
         }
         function onMcuRelayNak(errCode) {
-            if (!root._sendingRelays) return
             relayAckTimer.stop()
-            var r = root._relayQueue[root._relayQueueIdx]
-            appController.addLog("[MCU] NAK " + (r ? r.name : "?")
-                + " err=0x" + errCode.toString(16).toUpperCase())
-            root._relayQueueIdx++
-            root._sendNextRelayItem()
+            root._waitingRelayAck = false
+            appController.addLog("[MCU] << SET RELAY NAK — err=0x" + errCode.toString(16).toUpperCase()
+                + " — relay có thể chưa được bật!")
         }
     }
 

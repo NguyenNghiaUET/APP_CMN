@@ -441,6 +441,49 @@ void McuSender::sendNextQueuedPacket()
     }
 }
 
+bool McuSender::sendRelayOnList(const QVariantList &onPins)
+{
+    if (!m_serial.isOpen()) {
+        emit errorOccurred(tr("Cổng COM chưa mở"));
+        return false;
+    }
+
+    const quint8 STX   = 0xA5;
+    const quint8 ETX   = 0x5A;
+    const quint8 total = 0x01;
+    const quint8 seq   = 0x01;
+    const quint8 cmd   = CMD_RELAY;
+    const quint8 port  = 0x00;
+
+    // Data = chỉ các pin đang ON (MCU tự hiểu pin không có trong list → OFF)
+    QByteArray data;
+    for (const QVariant &v : onPins)
+        data.append(static_cast<char>(static_cast<quint8>(v.toInt())));
+
+    const quint8 len = static_cast<quint8>(data.size());
+    const quint8 crc = calc_crc(STX, total, seq, cmd, len, data, port);
+
+    QByteArray packet;
+    packet.append(static_cast<char>(STX));
+    packet.append(static_cast<char>(total));
+    packet.append(static_cast<char>(seq));
+    packet.append(static_cast<char>(cmd));
+    packet.append(static_cast<char>(port));
+    packet.append(static_cast<char>(len));
+    packet.append(data);
+    packet.append(static_cast<char>(crc));
+    packet.append(static_cast<char>(ETX));
+
+    m_sendingRelay = true;
+    m_relayRetry   = 0;
+
+    qDebug() << QString("[RELAY] Gửi %1 pin ON | HEX: %2")
+                .arg(onPins.size())
+                .arg(QString(packet.toHex(' ').toUpper()));
+
+    return sendRawPacket(packet);
+}
+
 bool McuSender::sendRelayFrame(int pin, bool state)
 {
     if (!m_serial.isOpen()) {
@@ -457,12 +500,9 @@ bool McuSender::sendRelayFrame(int pin, bool state)
 
     QByteArray data;
     data.append(static_cast<char>(static_cast<quint8>(pin)));
-    data.append(static_cast<char>(state ? 0xA0 : 0x00)); // ON=0xA0, OFF=0x00
+    data.append(static_cast<char>(state ? 0xA0 : 0x00));
     const quint8 len = static_cast<quint8>(data.size());
-
-    quint8 crc = STX ^ total ^ seq ^ cmd ^ port ^ len;
-    for (int i = 0; i < data.size(); i++)
-        crc ^= static_cast<quint8>(data.at(i));
+    const quint8 crc = calc_crc(STX, total, seq, cmd, len, data, port);
 
     QByteArray packet;
     packet.append(static_cast<char>(STX));
@@ -478,16 +518,11 @@ bool McuSender::sendRelayFrame(int pin, bool state)
     m_sendingRelay = true;
     m_relayRetry   = 0;
 
-    qDebug() << QString("[RELAY] Gửi pin=%1 state=%2 | HEX: %3")
+    qDebug() << QString("[RELAY] pin=%1 %2 | HEX: %3")
                 .arg(pin).arg(state ? "ON" : "OFF")
                 .arg(QString(packet.toHex(' ').toUpper()));
 
     return sendRawPacket(packet);
-}
-
-int McuSender::relayPin(const QString &name) const
-{
-    return kRelayPinMap.value(name, -1);
 }
 
 bool McuSender::sendRelayByName(const QString &name, bool state)
@@ -495,10 +530,14 @@ bool McuSender::sendRelayByName(const QString &name, bool state)
     int pin = kRelayPinMap.value(name, -1);
     if (pin < 0) {
         emit errorOccurred(tr("Relay '%1' không có trong pin map").arg(name));
-        qDebug() << "[RELAY] Không tìm thấy pin cho relay:" << name;
         return false;
     }
     return sendRelayFrame(pin, state);
+}
+
+int McuSender::relayPin(const QString &name) const
+{
+    return kRelayPinMap.value(name, -1);
 }
 
 void McuSender::sendNextScript()

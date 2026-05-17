@@ -61,9 +61,13 @@ public:
 
     // Relay control — frame 0xA5, riêng biệt với cable-test queue
     // CMD_RELAY = 0x86 (TODO: cập nhật đúng CMD firmware)
-    bool sendRelayFrame(int pin, bool state);
 
-    // Gửi relay theo tên — tra pin map nội bộ, dùng được cả QML lẫn C++
+    // Gửi 1 frame chứa danh sách pin đang ON — MCU tự hiểu pin còn lại là OFF
+    // onPins: QVariantList of int (pin numbers)
+    Q_INVOKABLE bool sendRelayOnList(const QVariantList &onPins);
+
+    // Gửi relay đơn lẻ có byte trạng thái (dùng bởi CmnAutoTestRunner)
+    bool sendRelayFrame(int pin, bool state);
     Q_INVOKABLE bool sendRelayByName(const QString &name, bool state);
 
     // Tra pin từ tên relay (trả -1 nếu không tìm thấy)
